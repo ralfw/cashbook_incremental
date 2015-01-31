@@ -34,7 +34,7 @@ Ultimately the app should sport a graphical user interface. To move the implemen
 
 Also a CLI helps focussing on the domain. GUIs can be distracting to developers at times ;-)[^f_CLIvalue]
 
-[^f_CLIvalue]: An app with comprehensive domain logic and just a CLI is (arguably) more valuable than an app with a sophisticated GUI and meager domain logic.
+[^f_CLIvalue]: An app with comprehensive domain logic and "just"" a CLI is (arguably) more valuable than an app with a sophisticated GUI and meager domain logic.
 
 Here's a suggestion for a CLI in action (assume the current year to be 2015):
 

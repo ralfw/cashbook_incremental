@@ -1,0 +1,14 @@
+﻿<Properties StartupItem="cashbook.console/cashbook.console.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="cashbook.console/Head.cs">
+    <Files>
+      <File FileName="cashbook.console/Program.cs" Line="20" Column="20" />
+      <File FileName="cashbook.body/Body.cs" Line="19" Column="19" />
+      <File FileName="cashbook.console/Head.cs" Line="3" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

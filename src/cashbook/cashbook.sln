@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cashbook.console", "cashbook.console\cashbook.console.csproj", "{7AEE42EE-546C-4341-ABB4-F6CC80CDE1A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cashbook.body", "cashbook.body\cashbook.body.csproj", "{1331C560-7F75-4488-8BB5-08787F558C20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1331C560-7F75-4488-8BB5-08787F558C20}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1331C560-7F75-4488-8BB5-08787F558C20}.Debug|x86.Build.0 = Debug|Any CPU
+		{1331C560-7F75-4488-8BB5-08787F558C20}.Release|x86.ActiveCfg = Release|Any CPU
+		{1331C560-7F75-4488-8BB5-08787F558C20}.Release|x86.Build.0 = Release|Any CPU
+		{7AEE42EE-546C-4341-ABB4-F6CC80CDE1A1}.Debug|x86.ActiveCfg = Debug|x86
+		{7AEE42EE-546C-4341-ABB4-F6CC80CDE1A1}.Debug|x86.Build.0 = Debug|x86
+		{7AEE42EE-546C-4341-ABB4-F6CC80CDE1A1}.Release|x86.ActiveCfg = Release|x86
+		{7AEE42EE-546C-4341-ABB4-F6CC80CDE1A1}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal

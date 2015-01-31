@@ -1,0 +1,44 @@
+<mockup version="1.0" skin="sketch" measuredW="424" measuredH="398" mockupW="364" mockupH="378">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::TitleWindow" x="60" y="20" w="364" h="378" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Cash%20Book</text>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="75" y="56" w="-1" h="-1" measuredW="83" measuredH="21" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>January%202015</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::DataGrid" x="75" y="85" w="-1" h="-1" measuredW="335" measuredH="205" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Date%2C%20Description%2C%20Amount%2C%20Balance%0A01.01.2015%2C%20Initial%2C%20%2C%201000.00%u20AC%0A02.01.2015%2C%20Gas%2C%20-44.00%u20AC%2C%20956.00%u20AC%0A04.01.2015%2C%20Snacks%2C%20-9.00%u20AC%2C%20946.00%u20AC%0A10.01.2015%2C%20Deposit%2C%20100.00%u20AC%2C%201046.00%u20AC%0A15.01.2015%2C%20Flipchart%20papger%2C%20-50.00%u20AC%2C%20996.00%u20AC%0A31.01.2015%2C%20Final%2C%20%2C%20996.00%u20AC</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::TextInput" x="75" y="305" w="-1" h="-1" measuredW="78" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>20.01.2015</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::TextInput" x="158" y="304" w="101" h="-1" measuredW="43" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Pens</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::TextInput" x="266" y="304" w="63" h="-1" measuredW="41" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>5.60</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Button" x="329" y="304" w="81" h="27" measuredW="77" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Withdraw</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Button" x="329" y="332" w="81" h="27" measuredW="67" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Deposit</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

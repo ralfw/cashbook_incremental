@@ -3,8 +3,8 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="cashbook.console/Head.cs">
     <Files>
       <File FileName="cashbook.console/Program.cs" Line="20" Column="20" />
-      <File FileName="cashbook.body/Body.cs" Line="19" Column="19" />
-      <File FileName="cashbook.console/Head.cs" Line="3" Column="3" />
+      <File FileName="cashbook.body/Body.cs" Line="92" Column="92" />
+      <File FileName="cashbook.console/Head.cs" Line="28" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

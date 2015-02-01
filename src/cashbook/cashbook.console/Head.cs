@@ -26,8 +26,18 @@ namespace cashbook.console
 		}
 
 		[Verb]
-		void Deposit () {
-			Console.WriteLine ("deposit...");
+		void Deposit (
+			[Required, Aliases("d")] 					DateTime transactionDate, 
+			[Required, Aliases("a")] 					double amount, 
+			[Aliases("desc"), DefaultValue("Deposit")] 	string description) {
+			body.Deposit (transactionDate, amount, description,
+				(Balance newBalance) =>
+					Console.WriteLine("New balance as of {0}: {1}", newBalance.CuttoffDate, newBalance.Amount),
+				(string errormsg) => {
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine(errormsg);
+				}
+			);
 		}
 
 		[Verb]

@@ -1,6 +1,8 @@
 using System;
 using eventstore.contract;
 using eventstore.internals;
+using System.Collections.Generic;
+using cashbook.body.data;
 
 namespace cashbook.body
 {
@@ -17,6 +19,11 @@ namespace cashbook.body
 							   "DepositMade", 
 							   string.Format ("{0:s}\t{1}\t{2}", transactionDate, amount, description));
 			this.es.Record (e);
+		}
+
+
+		public IEnumerable<Transaction> Load_all_transactions() {
+			throw new NotImplementedException ();
 		}
 	}
 

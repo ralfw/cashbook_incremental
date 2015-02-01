@@ -33,6 +33,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Body.cs" />
+    <Compile Include="Repository.cs" />
+    <Compile Include="data\contract\Balance.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -40,5 +42,9 @@
       <Project>{7413C842-BB80-40D1-98F3-65518BBD5C73}</Project>
       <Name>eventstore</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="data\" />
+    <Folder Include="data\contract\" />
   </ItemGroup>
 </Project>

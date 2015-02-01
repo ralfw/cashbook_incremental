@@ -19,7 +19,7 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
-    <Commandlineparameters>deposit -d:24.1.2015 -a:12,34</Commandlineparameters>
+    <Commandlineparameters>deposit -d:1.2.2015 -a:12,34</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -49,6 +49,10 @@
     <ProjectReference Include="..\cashbook.body\cashbook.body.csproj">
       <Project>{1331C560-7F75-4488-8BB5-08787F558C20}</Project>
       <Name>cashbook.body</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\eventstore\eventstore\eventstore.csproj">
+      <Project>{7413C842-BB80-40D1-98F3-65518BBD5C73}</Project>
+      <Name>eventstore</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

@@ -1,10 +1,13 @@
 ﻿<Properties StartupItem="cashbook.console/cashbook.console.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="cashbook.console/Head.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="cashbook.body/Body.cs">
     <Files>
-      <File FileName="cashbook.console/Program.cs" Line="1" Column="1" />
-      <File FileName="cashbook.body/Body.cs" Line="1" Column="1" />
-      <File FileName="cashbook.console/Head.cs" Line="17" Column="17" />
+      <File FileName="cashbook.console/Program.cs" Line="4" Column="4" />
+      <File FileName="cashbook.body/Body.cs" Line="7" Column="7" />
+      <File FileName="cashbook.console/Head.cs" Line="33" Column="33" />
+      <File FileName="../eventstore/eventstore/internals/Event.cs" Line="1" Column="1" />
+      <File FileName="cashbook.body/data/contract/Balance.cs" Line="2" Column="2" />
+      <File FileName="cashbook.body/Repository.cs" Line="26" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

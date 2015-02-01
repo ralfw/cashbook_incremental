@@ -1,6 +1,7 @@
 using System;
 using cashbook.body;
 using CLAP;
+using cashbook.body.data.contract;
 
 namespace cashbook.console
 {
@@ -32,7 +33,7 @@ namespace cashbook.console
 			[Aliases("desc"), DefaultValue("Deposit")] 	string description) {
 			body.Deposit (transactionDate, amount, description,
 				(Balance newBalance) =>
-					Console.WriteLine("New balance as of {0}: {1}", newBalance.CuttoffDate, newBalance.Amount),
+					Console.WriteLine("New balance as of {0:d}: {1:C}", newBalance.CuttoffDate, newBalance.Amount),
 				(string errormsg) => {
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine(errormsg);

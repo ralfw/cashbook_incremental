@@ -1,6 +1,7 @@
 ﻿using System;
 using cashbook.body;
 using CLAP;
+using eventstore;
 
 namespace cashbook.console
 {
@@ -8,7 +9,9 @@ namespace cashbook.console
 	{
 		public static void Main (string[] args)
 		{
-			var body = new Body ();
+			var es = new FileEventStore ("events");
+			var repo = new Repository (es);
+			var body = new Body (repo);
 			var head = new Head (body);
 
 			head.Run (args);

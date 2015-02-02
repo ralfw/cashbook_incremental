@@ -28,6 +28,24 @@ namespace cashbook.body
                     
                     var transactions = this.repo.Load_all_transactions().ToArray();
 				    var cb = this.cashbookFactory(transactions);
+
+					var newBalance = cb.Calculate_end_of_month_balance(transactionDate);
+					onSuccess(newBalance);
+				},
+				onError);
+		}
+
+
+		public void Withdraw(DateTime transactionDate, double amount, string description, bool force,
+							 Action<Balance> onSuccess, Action<string> onError
+		) {
+			Cashbook.Validate_transaction_date (transactionDate, force,
+				() => {
+					this.repo.Make_withdrawal(transactionDate, Math.Abs(amount), description); 
+
+					var transactions = this.repo.Load_all_transactions().ToArray();
+					var cb = this.cashbookFactory(transactions);
+
 					var newBalance = cb.Calculate_end_of_month_balance(transactionDate);
 					onSuccess(newBalance);
 				},

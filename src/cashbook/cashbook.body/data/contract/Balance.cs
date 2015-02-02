@@ -5,7 +5,7 @@ using eventstore.internals;
 namespace cashbook.body.data.contract
 {
 	public class Balance {
-		public DateTime CuttoffDate;
-		public double Amount;
+		public DateTime Month;
+		public double Value;
 	}
 }

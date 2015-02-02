@@ -22,6 +22,30 @@ namespace cashbook.body.tests
 			
 
 		[Test]
+		public void Make_withdrawal_in_curr_month() {
+			TimeProvider.Now = () => new DateTime(2014,12,31);
+
+			this.body.Deposit (new DateTime (2014, 11, 2), 100, "", true,
+				_ => {},
+				null);
+
+			Balance result = null;
+
+			this.body.Withdraw (new DateTime (2014, 12, 2), 42, "", false,
+				_ => result = _,
+				null);
+
+			Assert.AreEqual (new DateTime (2014, 12, 1), result.Month);
+			Assert.AreEqual (58, result.Value);
+
+			this.body.Withdraw (new DateTime (2014, 12, 10), 10, "", false,
+				_ => result = _,
+				null);
+			Assert.AreEqual (48, result.Value);
+		}
+
+
+		[Test]
 		public void Deposit_in_current_month() {
 			TimeProvider.Now = () => new DateTime(2014,12,31);
 
@@ -30,14 +54,14 @@ namespace cashbook.body.tests
 			this.body.Deposit (new DateTime (2014, 12, 2), 100, "", false,
 				_ => result = _,
 				null);
-			Assert.AreEqual (new DateTime (2014, 12, 1), result.CuttoffDate);
-			Assert.AreEqual (100, result.Amount);
+			Assert.AreEqual (new DateTime (2014, 12, 1), result.Month);
+			Assert.AreEqual (100, result.Value);
 
 			body.Deposit (new DateTime (2014, 12, 10), 50, "", false,
 				_ => result = _,
 				null);
-			Assert.AreEqual (new DateTime (2014, 12, 1), result.CuttoffDate);
-			Assert.AreEqual (150, result.Amount);
+			Assert.AreEqual (new DateTime (2014, 12, 1), result.Month);
+			Assert.AreEqual (150, result.Value);
 		}
 
 
@@ -61,7 +85,7 @@ namespace cashbook.body.tests
 				_ => result = _,
 				null);
 
-			Assert.AreEqual (100, result.Amount);
+			Assert.AreEqual (100, result.Value);
 		}
 
 

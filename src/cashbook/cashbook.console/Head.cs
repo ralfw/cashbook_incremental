@@ -20,11 +20,24 @@ namespace cashbook.console
 		void Sheet() {
 			Console.WriteLine ("sheet...");
 		}
+			
 
 		[Verb]
-		void Withdraw (){
-			Console.WriteLine ("withdraw...");
+		void Withdraw (
+			[Required, Aliases("d")] 								DateTime transactionDate, 
+			[Required, Aliases("a")] 								double amount, 
+			[Required, Aliases("desc"), DefaultValue("Deposit")] 	string description,
+			[Aliases("f")] 											bool force) {
+			body.Withdraw (transactionDate, amount, description, force,
+				(Balance newBalance) =>
+					Console.WriteLine("New balance at end of {0:MMM yyyy}: {1:C}", newBalance.Month, newBalance.Value),
+				(string errormsg) => {
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine(errormsg);
+				}
+			);
 		}
+
 
 		[Verb]
 		void Deposit (
@@ -34,13 +47,14 @@ namespace cashbook.console
 			[Aliases("f")] 								bool force) {
 			body.Deposit (transactionDate, amount, description, force,
 				(Balance newBalance) =>
-					Console.WriteLine("New balance as of {0:d}: {1:C}", newBalance.CuttoffDate, newBalance.Amount),
+				Console.WriteLine("New balance at end of {0:MMM yyyy}: {1:C}", newBalance.Month, newBalance.Value),
 				(string errormsg) => {
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine(errormsg);
 				}
 			);
 		}
+
 
 		[Verb]
 		void Export() {

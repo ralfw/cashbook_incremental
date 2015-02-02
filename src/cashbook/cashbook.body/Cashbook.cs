@@ -30,7 +30,7 @@ namespace cashbook.body
 			var monthlyBalances = Calculate_monthly_balances (this.transactions);
 
 			var month = new DateTime (date.Year, date.Month, 1);
-			return monthlyBalances.First (b => b.CuttoffDate == month);
+			return monthlyBalances.First (b => b.Month == month);
 		}
 
 		public IEnumerable<Balance> Calculate_monthly_balances(IEnumerable<Transaction> transactions) {
@@ -41,9 +41,9 @@ namespace cashbook.body
 			// monatsendstände akkumulieren
 			var balances = new List<Balance> ();
 			foreach (var s in monthlySums) {
-				var b = new Balance{CuttoffDate = s.Month, Amount = s.Sum};
+				var b = new Balance{Month = s.Month, Value = s.Sum};
 				if (balances.Count > 0)
-					b.Amount += balances [balances.Count - 1].Amount;
+					b.Value += balances [balances.Count - 1].Value;
 				balances.Add (b);
 			}
 			return balances;

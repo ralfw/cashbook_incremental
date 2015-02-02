@@ -10,7 +10,7 @@ namespace cashbook.body
 	public class Repository {
 		enum Eventnames {
 			DepositMade,
-			WithdrawlMade
+			WithdrawalMade
 		}
 
 		IEventStore es;
@@ -19,9 +19,18 @@ namespace cashbook.body
 			this.es = es;
 		}
 
+
 		public void Make_deposit(DateTime transactionDate, double amount, string description) {
 			var e = new Event (transactionDate.ToContext(), 
 							   Eventnames.DepositMade.ToString(), 
+							   string.Format ("{0:s}\t{1}\t{2}", transactionDate, amount, description));
+			this.es.Record (e);
+		}
+
+
+		public void Make_withdrawal(DateTime transactionDate, double amount, string description) {
+			var e = new Event (transactionDate.ToContext(), 
+							   Eventnames.WithdrawalMade.ToString(), 
 							   string.Format ("{0:s}\t{1}\t{2}", transactionDate, amount, description));
 			this.es.Record (e);
 		}

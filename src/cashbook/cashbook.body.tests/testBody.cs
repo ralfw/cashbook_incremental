@@ -2,7 +2,7 @@
 using System;
 using cashbook.body.data;
 using System.Linq;
-using cashbook.body.data.contract;
+using cashbook.contracts.data;
 
 namespace cashbook.body.tests
 {

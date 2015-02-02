@@ -1,14 +1,15 @@
 ﻿using System;
 using eventstore.contract;
 using eventstore.internals;
-using cashbook.body.data.contract;
+using cashbook.contracts.data;
 using System.Collections.Generic;
 using cashbook.body.data;
 using System.Linq;
+using cashbook.contracts;
 
 namespace cashbook.body
 {
-	public class Body
+	public class Body : IBody
 	{
 	    readonly Repository repo;
 	    readonly Func<Transaction[], Cashbook> cashbookFactory;

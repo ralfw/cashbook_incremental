@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eventstore", "..\eventstore
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cashbook.body.tests", "cashbook.body.tests\cashbook.body.tests.csproj", "{F47DF950-4165-4677-9D7C-E63FA29556D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cashbook.contracts", "cashbook.contracts\cashbook.contracts.csproj", "{D696FFE8-F073-4A62-905D-728F4F1749DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -27,6 +29,10 @@ Global
 		{7AEE42EE-546C-4341-ABB4-F6CC80CDE1A1}.Debug|x86.Build.0 = Debug|x86
 		{7AEE42EE-546C-4341-ABB4-F6CC80CDE1A1}.Release|x86.ActiveCfg = Release|x86
 		{7AEE42EE-546C-4341-ABB4-F6CC80CDE1A1}.Release|x86.Build.0 = Release|x86
+		{D696FFE8-F073-4A62-905D-728F4F1749DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D696FFE8-F073-4A62-905D-728F4F1749DB}.Debug|x86.Build.0 = Debug|Any CPU
+		{D696FFE8-F073-4A62-905D-728F4F1749DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{D696FFE8-F073-4A62-905D-728F4F1749DB}.Release|x86.Build.0 = Release|Any CPU
 		{F47DF950-4165-4677-9D7C-E63FA29556D0}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{F47DF950-4165-4677-9D7C-E63FA29556D0}.Debug|x86.Build.0 = Debug|Any CPU
 		{F47DF950-4165-4677-9D7C-E63FA29556D0}.Release|x86.ActiveCfg = Release|Any CPU

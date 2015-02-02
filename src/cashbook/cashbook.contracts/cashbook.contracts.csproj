@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1331C560-7F75-4488-8BB5-08787F558C20}</ProjectGuid>
+    <ProjectGuid>{D696FFE8-F073-4A62-905D-728F4F1749DB}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>cashbook.body</RootNamespace>
-    <AssemblyName>cashbook.body</AssemblyName>
+    <RootNamespace>cashbook.contracts</RootNamespace>
+    <AssemblyName>cashbook.contracts</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -32,25 +32,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Body.cs" />
-    <Compile Include="Repository.cs" />
-    <Compile Include="data\Transaction.cs" />
-    <Compile Include="data\TransactionTypes.cs" />
-    <Compile Include="TimeProvider.cs" />
-    <Compile Include="Cashbook.cs" />
-    <Compile Include="CashbookExtensions.cs" />
+    <Compile Include="IBody.cs" />
+    <Compile Include="data\Balance.cs" />
+    <Compile Include="data\BalanceSheet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\..\eventstore\eventstore\eventstore.csproj">
-      <Project>{7413C842-BB80-40D1-98F3-65518BBD5C73}</Project>
-      <Name>eventstore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\cashbook.contracts\cashbook.contracts.csproj">
-      <Project>{D696FFE8-F073-4A62-905D-728F4F1749DB}</Project>
-      <Name>cashbook.contracts</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="data\" />
   </ItemGroup>

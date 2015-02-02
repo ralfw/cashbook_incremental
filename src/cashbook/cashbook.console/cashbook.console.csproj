@@ -57,5 +57,9 @@
       <Project>{7413C842-BB80-40D1-98F3-65518BBD5C73}</Project>
       <Name>eventstore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\cashbook.contracts\cashbook.contracts.csproj">
+      <Project>{D696FFE8-F073-4A62-905D-728F4F1749DB}</Project>
+      <Name>cashbook.contracts</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using cashbook.body;
 using CLAP;
-using cashbook.body.data.contract;
+using cashbook.contracts.data;
 
 namespace cashbook.console
 {

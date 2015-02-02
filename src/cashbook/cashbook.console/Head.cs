@@ -30,8 +30,9 @@ namespace cashbook.console
 		void Deposit (
 			[Required, Aliases("d")] 					DateTime transactionDate, 
 			[Required, Aliases("a")] 					double amount, 
-			[Aliases("desc"), DefaultValue("Deposit")] 	string description) {
-			body.Deposit (transactionDate, amount, description,
+			[Aliases("desc"), DefaultValue("Deposit")] 	string description,
+			[Aliases("f")] 								bool force) {
+			body.Deposit (transactionDate, amount, description, force,
 				(Balance newBalance) =>
 					Console.WriteLine("New balance as of {0:d}: {1:C}", newBalance.CuttoffDate, newBalance.Amount),
 				(string errormsg) => {

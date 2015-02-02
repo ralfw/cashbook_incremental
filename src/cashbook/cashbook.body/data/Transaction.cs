@@ -9,7 +9,7 @@ namespace cashbook.body.data
 		public TransactionTypes Type;
 		public DateTime TransactionDate;
 		public double Amount;
-		public double SignedAmount { get { return Type == TransactionTypes.Deposit ? Amount : -Amount; } }
+		public double Value { get { return Type == TransactionTypes.Deposit ? Amount : -Amount; } }
 		public string Description;
 	}	
 }

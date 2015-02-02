@@ -9,6 +9,8 @@ namespace cashbook.console
 	{
 		public static void Main (string[] args)
 		{
+			TimeProvider.Now = () => DateTime.Now;
+
 			var es = new FileEventStore ("events");
 			var repo = new Repository (es);
 			var body = new Body (repo);

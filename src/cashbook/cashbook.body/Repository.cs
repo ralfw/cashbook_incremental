@@ -8,6 +8,11 @@ namespace cashbook.body
 {
 
 	public class Repository {
+		enum Eventnames {
+			DepositMade,
+			WithdrawlMade
+		}
+
 		IEventStore es;
 
 		public Repository(IEventStore es) {
@@ -16,14 +21,24 @@ namespace cashbook.body
 
 		public void Make_deposit(DateTime transactionDate, double amount, string description) {
 			var e = new Event (transactionDate.ToContext(), 
-							   "DepositMade", 
+							   Eventnames.DepositMade.ToString(), 
 							   string.Format ("{0:s}\t{1}\t{2}", transactionDate, amount, description));
 			this.es.Record (e);
 		}
 
 
 		public IEnumerable<Transaction> Load_all_transactions() {
-			throw new NotImplementedException ();
+			var allEvents = this.es.Replay ();
+			foreach (var e in allEvents) {
+				var fields = e.Payload.Split ('\t');
+				yield return new Transaction {
+					Type = (Eventnames)Enum.Parse (typeof(Eventnames), e.Name) == Eventnames.DepositMade
+						   ? TransactionTypes.Deposit : TransactionTypes.Withdrawal,
+					TransactionDate = DateTime.Parse (fields [0]),
+					Amount = double.Parse (fields [1]),
+					Description = fields [2]
+				};
+			}
 		}
 	}
 

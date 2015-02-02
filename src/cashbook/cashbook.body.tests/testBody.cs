@@ -99,6 +99,34 @@ namespace cashbook.body.tests
 
 			Assert.IsTrue (errormsg.IndexOf ("future") > 0);
 		}
+
+
+		[Test]
+		public void Load_monthly_balance_sheet() {
+			TimeProvider.Now = () => new DateTime(2014,12,31);
+
+			this.body.Deposit (new DateTime (2014, 11, 2), 100, "", true, _ => {}, null);
+			this.body.Withdraw (new DateTime (2014, 11, 10), 10, "", true, _ => {}, null);
+			this.body.Withdraw (new DateTime (2014, 12, 3), 10, "", true, _ => {}, null);
+			this.body.Withdraw (new DateTime (2014, 12, 11), 5, "", true, _ => {}, null);
+			this.body.Withdraw (new DateTime (2014, 12, 22), 5, "", true, _ => {}, null);
+
+			var bs = this.body.Load_monthly_balance_sheet (new DateTime (2014, 11, 10));
+			Assert.AreEqual (new DateTime (2014, 11, 1), bs.Month);
+			Assert.AreEqual (4, bs.Items.Count());
+
+			Assert.AreEqual (0.0, bs.Items [0].Value);
+			Assert.AreEqual (0.0, bs.Items [0].RunningTotalValue);
+
+			Assert.AreEqual (100.0, bs.Items [1].Value);
+			Assert.AreEqual (100.0, bs.Items [1].RunningTotalValue);
+
+			Assert.AreEqual (-10.0, bs.Items [2].Value);
+			Assert.AreEqual (90.0, bs.Items [2].RunningTotalValue);
+
+			Assert.AreEqual (0.0, bs.Items [3].Value);
+			Assert.AreEqual (90, bs.Items [3].RunningTotalValue);
+		}
 	}
 }
 

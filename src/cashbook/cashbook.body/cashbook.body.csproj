@@ -39,7 +39,6 @@
     <Compile Include="data\TransactionTypes.cs" />
     <Compile Include="TimeProvider.cs" />
     <Compile Include="Cashbook.cs" />
-    <Compile Include="data\contract\Item.cs" />
     <Compile Include="data\contract\BalanceSheet.cs" />
     <Compile Include="CashbookExtensions.cs" />
   </ItemGroup>

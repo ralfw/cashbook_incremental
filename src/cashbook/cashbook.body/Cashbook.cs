@@ -10,13 +10,13 @@ namespace cashbook.body
 {
 
 	public class Cashbook {
-		Transaction[] transactions;
+	    readonly Transaction[] transactions;
 
 		public Cashbook(Transaction[] transactions) {
 			this.transactions = transactions;
 		}
 
-		public void Validate_transaction_date(DateTime txDate, bool force, 
+		public static void Validate_transaction_date(DateTime txDate, bool force, 
 			Action onValid, Action<string> onInvalid) {
 			if (txDate > TimeProvider.Now())
 				onInvalid ("Cannot execute transactions in the future!");

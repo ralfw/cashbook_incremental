@@ -10,8 +10,8 @@ namespace cashbook.body
 {
 	public class Body
 	{
-		Repository repo;
-		Func<Transaction[], Cashbook> cashbookFactory;
+	    readonly Repository repo;
+	    readonly Func<Transaction[], Cashbook> cashbookFactory;
 
 		public Body(Repository repo, Func<Transaction[],Cashbook> cashbookFactory) {
 			this.cashbookFactory = cashbookFactory;
@@ -22,12 +22,12 @@ namespace cashbook.body
 		public void Deposit(DateTime transactionDate, double amount, string description, bool force,
 							Action<Balance> onSuccess, Action<string> onError
 		) {
-			var transactions = this.repo.Load_all_transactions ().ToArray();
-			var cb = this.cashbookFactory (transactions);
-
-			cb.Validate_transaction_date (transactionDate, force,
+			Cashbook.Validate_transaction_date (transactionDate, force,
 				() => {
-					this.repo.Make_deposit(transactionDate, Math.Abs(amount), description);
+                    this.repo.Make_deposit(transactionDate, Math.Abs(amount), description); 
+                    
+                    var transactions = this.repo.Load_all_transactions().ToArray();
+				    var cb = this.cashbookFactory(transactions);
 					var newBalance = cb.Calculate_end_of_month_balance(transactionDate);
 					onSuccess(newBalance);
 				},

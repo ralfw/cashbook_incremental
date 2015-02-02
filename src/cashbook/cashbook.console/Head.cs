@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using cashbook.body;
 using CLAP;
 using cashbook.body.data.contract;
@@ -24,10 +25,22 @@ namespace cashbook.console
 			var sheetVM = this.body.Load_monthly_balance_sheet (month);
 
 			Console.WriteLine ("{0:MMMM yyyy}", sheetVM.Month);
-			foreach(var item in sheetVM.Items) {
-				Console.WriteLine ("{0:dd}.\t{1}\t{2:c}\t{3:c}", item.TransactionDate, item.Description, item.Value, item.RunningTotalValue);
-			}
+			Console.WriteLine (Format_BalanceSheetItem (sheetVM.Items.First (), true));
+			sheetVM.Items.Skip (1)
+						 .Take (sheetVM.Items.Length - 2)
+						 .ToList ()
+						 .ForEach (i => Console.WriteLine(Format_BalanceSheetItem(i, false)));
+			Console.WriteLine (Format_BalanceSheetItem (sheetVM.Items.Last (), true));
 		}
+
+		static string Format_BalanceSheetItem(BalanceSheet.Item item, bool balanceOnly) {
+			return string.Format ("{0:dd}.\t{1, -40}\t{2, 15}\t{3, 15:c}", 
+									item.TransactionDate, 
+									item.Description, 
+									balanceOnly ? "" : item.Value.ToString("c"), 
+									item.RunningTotalValue);
+		}
+
 			
 
 		[Verb]

@@ -8,3 +8,5 @@ mono cashbook.console.exe withdraw -d:10.2.2014 -a:65 -desc:"business cards" -f
 mono cashbook.console.exe withdraw -d:17.2.2014 -a:10 -desc:pens -f
 mono cashbook.console.exe withdraw -d:31.12.2013 -a:15 -desc:snacks
 mono cashbook.console.exe withdraw -d:31.12.2100 -a:15 -desc:snacks
+mono cashbook.console.exe sheet -m:1.1.2014
+mono cashbook.console.exe sheet -m:1.2.2014

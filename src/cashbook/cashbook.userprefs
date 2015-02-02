@@ -1,14 +1,15 @@
 ﻿<Properties StartupItem="cashbook.console/cashbook.console.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="cashbook.body.tests/testBody.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="cashbook.console/Head.cs">
     <Files>
-      <File FileName="cashbook.body/Body.cs" Line="49" Column="49" />
-      <File FileName="cashbook.body/Cashbook.cs" Line="27" Column="27" />
-      <File FileName="cashbook.console/Head.cs" Line="1" Column="1" />
+      <File FileName="cashbook.body/Body.cs" Line="1" Column="1" />
+      <File FileName="cashbook.body/Cashbook.cs" Line="41" Column="41" />
+      <File FileName="cashbook.console/Head.cs" Line="28" Column="28" />
       <File FileName="cashbook.body/data/contract/Balance.cs" Line="1" Column="1" />
-      <File FileName="cashbook.body/data/contract/BalanceSheet.cs" Line="16" Column="16" />
+      <File FileName="cashbook.body/data/contract/BalanceSheet.cs" Line="1" Column="1" />
       <File FileName="cashbook.body/data/Transaction.cs" Line="1" Column="1" />
-      <File FileName="cashbook.body.tests/testBody.cs" Line="42" Column="42" />
+      <File FileName="cashbook.body.tests/testBody.cs" Line="35" Column="35" />
+      <File FileName="cashbook.console/run.sh" Line="38" Column="38" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

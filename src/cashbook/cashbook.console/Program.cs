@@ -2,6 +2,7 @@
 using cashbook.body;
 using CLAP;
 using eventstore;
+using cashbook.body.data;
 
 namespace cashbook.console
 {
@@ -13,7 +14,8 @@ namespace cashbook.console
 
 			var es = new FileEventStore ("events");
 			var repo = new Repository (es);
-			var body = new Body (repo);
+			var cashbookFactory = new Func<Transaction[], Cashbook>(transactions => new Cashbook (transactions));
+			var body = new Body (repo, cashbookFactory);
 			var head = new Head (body);
 
 			head.Run (args);

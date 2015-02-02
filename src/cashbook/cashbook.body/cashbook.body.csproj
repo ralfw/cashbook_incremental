@@ -38,6 +38,7 @@
     <Compile Include="data\Transaction.cs" />
     <Compile Include="data\TransactionTypes.cs" />
     <Compile Include="TimeProvider.cs" />
+    <Compile Include="Cashbook.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

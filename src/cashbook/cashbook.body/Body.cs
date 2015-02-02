@@ -11,8 +11,10 @@ namespace cashbook.body
 	public class Body
 	{
 		Repository repo;
+		Func<Transaction[], Cashbook> cashbookFactory;
 
-		public Body(Repository repo) {
+		public Body(Repository repo, Func<Transaction[],Cashbook> cashbookFactory) {
+			this.cashbookFactory = cashbookFactory;
 			this.repo = repo;
 		}
 
@@ -20,50 +22,16 @@ namespace cashbook.body
 		public void Deposit(DateTime transactionDate, double amount, string description, bool force,
 							Action<Balance> onSuccess, Action<string> onError
 		) {
-			Validate_transaction_date (transactionDate, force,
+			var transactions = this.repo.Load_all_transactions ().ToArray();
+			var cb = this.cashbookFactory (transactions);
+
+			cb.Validate_transaction_date (transactionDate, force,
 				() => {
 					this.repo.Make_deposit(transactionDate, Math.Abs(amount), description);
-					var newBalance = Calculate_end_of_month_balance(transactionDate);
+					var newBalance = cb.Calculate_end_of_month_balance(transactionDate);
 					onSuccess(newBalance);
 				},
 				onError);
-		}
-
-
-		private void Validate_transaction_date(DateTime txDate, bool force, 
-											   Action onValid, Action<string> onInvalid) {
-			if (txDate > TimeProvider.Now())
-				onInvalid ("Cannot execute transactions in the future!");
-			else if (!force && (txDate.Year < TimeProvider.Now().Year || txDate.Month < TimeProvider.Now().Month))
-				onInvalid ("Cannot execute transactions before current month. Use -force to override.");
-			else
-				onValid ();
-		}
-
-
-		private Balance Calculate_end_of_month_balance(DateTime date) {
-			var allTx = this.repo.Load_all_transactions ();
-			var monthlyBalances = Calculate_monthly_balances (allTx);
-
-			var month = new DateTime (date.Year, date.Month, 1);
-			return monthlyBalances.First (b => b.CuttoffDate == month);
-		}
-
-
-		private IEnumerable<Balance> Calculate_monthly_balances(IEnumerable<Transaction> transactions) {
-			// pro monat die tx summieren
-			var monthlySums = transactions.Select(tx => new { Month = new DateTime(tx.TransactionDate.Year, tx.TransactionDate.Month, 1), Amount = tx.Value})
-										  .GroupBy(tx => tx.Month)
-										  .Select(g => new {Month = g.Key, Sum = g.Sum(tx => tx.Amount)});										  
-			// monatsendstände akkumulieren
-			var balances = new List<Balance> ();
-			foreach (var s in monthlySums) {
-				var b = new Balance{CuttoffDate = s.Month, Amount = s.Sum};
-				if (balances.Count > 0)
-					b.Amount += balances [balances.Count - 1].Amount;
-				balances.Add (b);
-			}
-			return balances;
 		}
 	}
 }

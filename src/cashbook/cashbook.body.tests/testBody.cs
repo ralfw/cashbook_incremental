@@ -112,11 +112,12 @@ namespace cashbook.body.tests
 			this.body.Withdraw (new DateTime (2014, 12, 22), 5, "", true, _ => {}, null);
 
 			var bs = this.body.Load_monthly_balance_sheet (new DateTime (2014, 11, 10));
-			Assert.AreEqual (new DateTime (2014, 11, 1), bs.Month);
+			Assert.AreEqual(new DateTime(2014, 11, 1), bs.Month);
 			Assert.AreEqual (4, bs.Items.Count());
 
 			Assert.AreEqual (0.0, bs.Items [0].Value);
 			Assert.AreEqual (0.0, bs.Items [0].RunningTotalValue);
+			Assert.AreEqual(new DateTime(2014, 11, 1), bs.Items[0].TransactionDate);
 
 			Assert.AreEqual (100.0, bs.Items [1].Value);
 			Assert.AreEqual (100.0, bs.Items [1].RunningTotalValue);
@@ -126,6 +127,22 @@ namespace cashbook.body.tests
 
 			Assert.AreEqual (0.0, bs.Items [3].Value);
 			Assert.AreEqual (90, bs.Items [3].RunningTotalValue);
+			Assert.AreEqual(new DateTime(2014, 11, 30), bs.Items[3].TransactionDate);
+
+
+			bs = this.body.Load_monthly_balance_sheet(new DateTime(2014, 12, 24));
+			Assert.AreEqual(new DateTime(2014, 12, 1), bs.Month);
+			Assert.AreEqual(5, bs.Items.Count());
+
+			Assert.AreEqual(90.0, bs.Items[0].RunningTotalValue);
+			Assert.AreEqual(new DateTime(2014, 12, 1), bs.Items[0].TransactionDate);
+
+			Assert.AreEqual(-10.0, bs.Items[1].Value);
+			Assert.AreEqual(80.0, bs.Items[1].RunningTotalValue);
+
+			Assert.AreEqual(0.0, bs.Items[4].Value);
+			Assert.AreEqual(70, bs.Items[4].RunningTotalValue);
+			Assert.AreEqual(new DateTime(2014, 12, 31), bs.Items[4].TransactionDate);
 		}
 	}
 }

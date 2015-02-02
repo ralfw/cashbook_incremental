@@ -22,14 +22,16 @@ namespace cashbook.body
 				var nmonth = month.Normalize ();
 
 				// get items for month
-				var items = this.transactions
-									.Where (tx => tx.TransactionDate.Normalize () == nmonth)
-									.Select (tx => new BalanceSheet.Item {
-										TransactionDate = tx.TransactionDate,
-										Description = tx.Description,
-										Value = tx.Value
-									})
-									.OrderBy (i => i.TransactionDate);
+			    var txItems = this.transactions
+			                          .Where(tx => tx.TransactionDate.Normalize() == nmonth)
+			                          .Select(tx => new BalanceSheet.Item
+			                              {
+			                                  TransactionDate = tx.TransactionDate,
+			                                  Description = tx.Description,
+			                                  Value = tx.Value
+			                              })
+			                          .OrderBy(i => i.TransactionDate)
+			                          .ToArray();
 
 				// calculate monthly balance at start of month
 				var monthlyBalances = Calculate_monthly_balances (this.transactions);
@@ -47,17 +49,17 @@ namespace cashbook.body
 
 				// adjust running monthly value in items
 				var runningValue = previousBalance.Value;
-				foreach (var i in items) {
-					runningValue += i.Value;
-					i.RunningTotalValue = runningValue;
+				foreach (var item in txItems) {
+					runningValue += item.Value;
+					item.RunningTotalValue = runningValue;
 				}
 
 				// add items for balances
-				items = new[] { new BalanceSheet.Item {TransactionDate = nmonth,Description = "Initial balance",Value = 0,RunningTotalValue = previousBalance.Value} }
-						.Concat (items)
-						.Concat (new[] { new BalanceSheet.Item{TransactionDate = nmonth.AddMonths(1).AddDays(-1), Description = "Final balance", Value = 0, RunningTotalValue = currentBalance.Value }});
+				var allItems =  new[] { new BalanceSheet.Item {TransactionDate = nmonth,Description = "Initial balance",Value = 0,RunningTotalValue = previousBalance.Value} }
+						        .Concat (txItems)
+						        .Concat (new[] { new BalanceSheet.Item{TransactionDate = nmonth.AddMonths(1).AddDays(-1), Description = "Final balance", Value = 0, RunningTotalValue = currentBalance.Value }});
 
-				return new BalanceSheet{ Month = nmonth, Items = items.ToArray() };
+				return new BalanceSheet{ Month = nmonth, Items = allItems.ToArray() };
 			}
 		}
 

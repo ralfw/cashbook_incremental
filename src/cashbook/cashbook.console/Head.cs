@@ -16,9 +16,17 @@ namespace cashbook.console
 			Parser.Run (args, this);
 		}
 
+
 		[Verb(IsDefault=true)]
-		void Sheet() {
-			Console.WriteLine ("sheet...");
+		void Sheet(
+			[Aliases("m,d,date")] DateTime month
+		) {
+			var sheetVM = this.body.Load_monthly_balance_sheet (month);
+
+			Console.WriteLine ("{0:MMMM yyyy}", sheetVM.Month);
+			foreach(var item in sheetVM.Items) {
+				Console.WriteLine ("{0:dd}.\t{1}\t{2:c}\t{3:c}", item.TransactionDate, item.Description, item.Value, item.RunningTotalValue);
+			}
 		}
 			
 

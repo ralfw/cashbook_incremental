@@ -19,6 +19,13 @@ namespace cashbook.body
 		}
 
 
+		public BalanceSheet Load_monthly_balance_sheet(DateTime month) {
+			var allTx = this.repo.Load_all_transactions ();
+			var cb = this.cashbookFactory (allTx.ToArray());
+			return cb[month];
+		}
+
+
 		public void Deposit(DateTime transactionDate, double amount, string description, bool force,
 							Action<Balance> onSuccess, Action<string> onError
 		) {

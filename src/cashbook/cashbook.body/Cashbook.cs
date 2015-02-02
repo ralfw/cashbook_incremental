@@ -16,6 +16,33 @@ namespace cashbook.body
 			this.transactions = transactions;
 		}
 
+
+		public BalanceSheet this[DateTime month] {
+			get {
+				var nmonth = month.Normalize ();
+
+				// get items for month
+				var items = this.transactions
+					.Where(tx => tx.TransactionDate.Normalize() == nmonth)
+									.Select (tx => new Item{
+									   	TransactionDate = tx.TransactionDate,
+										Description = tx.Description,
+										Value = tx.Value
+									});
+
+				// calculate monthly balanace at start of month
+				var monthlyBalances = Calculate_monthly_balances (this.transactions);
+				var previousBalance = monthlyBalances
+										.Where (b => b < month)
+										.LastOrDefault ();
+
+
+
+				return new BalanceSheet{ Month = month, Items = items };
+			}
+		}
+
+
 		public static void Validate_transaction_date(DateTime txDate, bool force, 
 			Action onValid, Action<string> onInvalid) {
 			if (txDate > TimeProvider.Now())
@@ -35,7 +62,7 @@ namespace cashbook.body
 
 		public IEnumerable<Balance> Calculate_monthly_balances(IEnumerable<Transaction> transactions) {
 			// pro monat die tx summieren
-			var monthlySums = transactions.Select(tx => new { Month = new DateTime(tx.TransactionDate.Year, tx.TransactionDate.Month, 1), Amount = tx.Value})
+			var monthlySums = transactions.Select(tx => new { Month = tx.TransactionDate.Normalize(), Amount = tx.Value})
 				.GroupBy(tx => tx.Month)
 				.Select(g => new {Month = g.Key, Sum = g.Sum(tx => tx.Amount)});										  
 			// monatsendstände akkumulieren

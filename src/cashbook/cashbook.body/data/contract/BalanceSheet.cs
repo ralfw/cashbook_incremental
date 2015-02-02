@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 namespace cashbook.body.data.contract
 {
-	public class Balance {
+	public class BalanceSheet {
 		public DateTime Month;
-		public double Value;
-	}
+		public IEnumerable<Item> Items;
+	}	
 }

@@ -5,8 +5,10 @@ using System.Collections.Generic;
 
 namespace cashbook.body.data.contract
 {
-	public class Balance {
-		public DateTime Month;
+	public class Item {
+		public DateTime TransactionDate;
+		public string Description;
 		public double Value;
+		public double RunningTotalValue;
 	}
 }

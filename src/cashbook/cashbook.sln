@@ -11,12 +11,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cashbook.body.tests", "cash
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cashbook.contracts", "cashbook.contracts\cashbook.contracts.csproj", "{D696FFE8-F073-4A62-905D-728F4F1749DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cashbook.console.tests", "cashbook.console.tests\cashbook.console.tests.csproj", "{1220719E-5C4F-4B26-AC1A-C324F7709F59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1220719E-5C4F-4B26-AC1A-C324F7709F59}.Debug|x86.ActiveCfg = Debug|x86
+		{1220719E-5C4F-4B26-AC1A-C324F7709F59}.Debug|x86.Build.0 = Debug|x86
+		{1220719E-5C4F-4B26-AC1A-C324F7709F59}.Release|x86.ActiveCfg = Release|x86
+		{1220719E-5C4F-4B26-AC1A-C324F7709F59}.Release|x86.Build.0 = Release|x86
 		{1331C560-7F75-4488-8BB5-08787F558C20}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{1331C560-7F75-4488-8BB5-08787F558C20}.Debug|x86.Build.0 = Debug|Any CPU
 		{1331C560-7F75-4488-8BB5-08787F558C20}.Release|x86.ActiveCfg = Release|Any CPU

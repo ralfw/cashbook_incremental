@@ -3,13 +3,14 @@ using System.Linq;
 using cashbook.body;
 using CLAP;
 using cashbook.contracts.data;
+using cashbook.contracts;
 
 namespace cashbook.console
 {
 	class Head {
-		Body body;
+		IBody body;
 
-		public Head(Body body) {
+		public Head(IBody body) {
 			this.body = body;
 		}
 

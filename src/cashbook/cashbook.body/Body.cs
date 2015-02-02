@@ -41,7 +41,7 @@ namespace cashbook.body
 		}
 
 
-		internal Balance Calculate_end_of_month_balance(DateTime date) {
+		private Balance Calculate_end_of_month_balance(DateTime date) {
 			var allTx = this.repo.Load_all_transactions ();
 			var monthlyBalances = Calculate_monthly_balances (allTx);
 
@@ -50,7 +50,7 @@ namespace cashbook.body
 		}
 
 
-		internal IEnumerable<Balance> Calculate_monthly_balances(IEnumerable<Transaction> transactions) {
+		private IEnumerable<Balance> Calculate_monthly_balances(IEnumerable<Transaction> transactions) {
 			// pro monat die tx summieren
 			var monthlySums = transactions.Select(tx => new { Month = new DateTime(tx.TransactionDate.Year, tx.TransactionDate.Month, 1), Amount = tx.Value})
 										  .GroupBy(tx => tx.Month)

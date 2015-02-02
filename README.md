@@ -60,3 +60,16 @@ Exported transactions of January 2015 to cashbook_2015_01.csv
 Exported transactions of 2014 to cashbook_2014.csv
 >
 ```
+
+## Implementation
+The implementation separates head from body. The head's sole purpose it to translate between user/environment an body. The body's purpose is to create behavior when triggert by the user through a head.
+
+The head knows the body only via the interface IBody{} defined in a contract assembly. That's simple IoC.
+
+Within the body data is flowing. It's structured according to the IOSP/PoMO principles.
+
+The body is where the action is. It's like the headless horseman in the movie ["Sleepy Hollow"](http://www.imdb.com/title/tt0162661/): very potent without a head.
+
+Initially a CLI head was implemented. It can be exercised through a shell script ([run.sh](https://github.com/ralfw/cashbook_incremental/blob/master/src/cashbook/cashbook.console/run.sh)).
+
+Persistence is achieved using a simple text file based event store.

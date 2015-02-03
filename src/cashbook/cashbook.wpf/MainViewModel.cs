@@ -196,10 +196,10 @@ namespace cashbook.wpf
 
         private void ClearEdit()
         {
-            _editAmount = 0.0m;
-            _editForce = false;
-            _editDate = DateTime.Today;
-            _editDescription = "";
+            EditAmount = 0.0m;
+            EditForce = false;
+            EditDate = DateTime.Today;
+            EditDescription = "";
         }
 
 

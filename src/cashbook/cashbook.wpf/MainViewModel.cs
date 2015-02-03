@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using cashbook.body;
+using cashbook.contracts;
 using cashbook.contracts.data;
 using cashbook.wpf.Annotations;
 
@@ -12,12 +12,13 @@ namespace cashbook.wpf
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private readonly Body _body;
+        private readonly IBody _body;
 
         private DateTime _selectedMonth;
 
         private BalanceSheet _shownBalanceSheet;
 
+        private bool _editForce;
         private DateTime _editDate;
         private string _editDescription;
         private decimal _editAmount;
@@ -27,6 +28,9 @@ namespace cashbook.wpf
 
         public MainViewModel()
         {
+            _withdraw = new DelegateCommand(Withdraw);
+            _deposit = new DelegateCommand(Deposit);
+
             _selectedMonth = FirstOfMonth(DateTime.Today);
 
             _shownBalanceSheet = new BalanceSheet
@@ -36,12 +40,9 @@ namespace cashbook.wpf
             };
 
             ClearEdit();
+       }
 
-            _withdraw = new DelegateCommand(Withdraw, ValidateEdit);
-            _deposit = new DelegateCommand(Deposit, ValidateEdit);
-        }
-
-        public MainViewModel(Body body)
+        public MainViewModel(IBody body)
             : this()
         {
             this._body = body;
@@ -98,8 +99,6 @@ namespace cashbook.wpf
                 {
                     _editDate = value.Date;
                     OnPropertyChanged("EditDate");
-                    _withdraw.CheckPossibleCanExecuteChange();
-                    _deposit.CheckPossibleCanExecuteChange();
                 }
             }
         }
@@ -113,8 +112,6 @@ namespace cashbook.wpf
                 {
                     _editDescription = value;
                     OnPropertyChanged("EditDescription");
-                    _withdraw.CheckPossibleCanExecuteChange();
-                    _deposit.CheckPossibleCanExecuteChange();
                 }
             }
         }
@@ -128,8 +125,19 @@ namespace cashbook.wpf
                 {
                     _editAmount = value;
                     OnPropertyChanged("EditAmount");
-                    _withdraw.CheckPossibleCanExecuteChange();
-                    _deposit.CheckPossibleCanExecuteChange();
+                }
+            }
+        }
+
+        public bool EditForce
+        {
+            get { return _editForce; }
+            set
+            {
+                if (_editForce != value)
+                {
+                    _editForce = value;
+                    OnPropertyChanged("EditForce");
                 }
             }
         }
@@ -154,11 +162,10 @@ namespace cashbook.wpf
 
         private void Deposit()
         {
-            if (!ValidateEdit() || _body == null)
+            if (_body == null)
                 return;
 
-            _body.Deposit(EditDate, EditAmount, EditDescription, 
-                true,
+            _body.Deposit(EditDate, EditAmount, EditDescription, EditForce,
                 _ =>
                 {
                     ClearEdit();
@@ -172,11 +179,10 @@ namespace cashbook.wpf
 
         private void Withdraw()
         {
-            if (!ValidateEdit() || _body == null)
+            if (_body == null)
                 return;
 
-            _body.Withdraw(EditDate, EditAmount, EditDescription, 
-                true,
+            _body.Withdraw(EditDate, EditAmount, EditDescription, EditForce,
                 _ =>
                 {
                     ClearEdit();
@@ -191,19 +197,11 @@ namespace cashbook.wpf
         private void ClearEdit()
         {
             _editAmount = 0.0m;
+            _editForce = false;
             _editDate = DateTime.Today;
             _editDescription = "";
         }
 
-
-        private bool ValidateEdit()
-        {
-            return
-                EditDate.Date <= DateTime.Today
-                && !string.IsNullOrEmpty(EditDescription)
-                && EditAmount > 0;
-
-        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName)

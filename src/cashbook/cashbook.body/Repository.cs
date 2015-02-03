@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using eventstore.contract;
 using eventstore.internals;
 using System.Collections.Generic;
@@ -38,16 +39,18 @@ namespace cashbook.body
 
 		public IEnumerable<Transaction> Load_all_transactions() {
 			var allEvents = this.es.Replay ();
+
+			var txs = new List<Transaction> ();
 			foreach (var e in allEvents) {
 				var fields = e.Payload.Split ('\t');
-				yield return new Transaction {
+				txs.Add(new Transaction {
 					Type = (Eventnames)Enum.Parse (typeof(Eventnames), e.Name) == Eventnames.DepositMade
 						   ? TransactionTypes.Deposit : TransactionTypes.Withdrawal,
 					TransactionDate = DateTime.Parse (fields [0]),
 					Amount = decimal.Parse (fields [1]),
-					Description = fields [2]
-				};
+					Description = fields [2]});
 			}
+			return txs.OrderBy (tx => tx.TransactionDate);
 		}
 	}
 

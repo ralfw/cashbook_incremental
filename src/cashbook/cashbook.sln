@@ -105,11 +105,13 @@ Global
 		{34BB4149-303C-4422-AACD-2AB30673FD32}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{34BB4149-303C-4422-AACD-2AB30673FD32}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{34BB4149-303C-4422-AACD-2AB30673FD32}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{34BB4149-303C-4422-AACD-2AB30673FD32}.Debug|x86.Build.0 = Debug|Any CPU
 		{34BB4149-303C-4422-AACD-2AB30673FD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34BB4149-303C-4422-AACD-2AB30673FD32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34BB4149-303C-4422-AACD-2AB30673FD32}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{34BB4149-303C-4422-AACD-2AB30673FD32}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{34BB4149-303C-4422-AACD-2AB30673FD32}.Release|x86.ActiveCfg = Release|Any CPU
+		{34BB4149-303C-4422-AACD-2AB30673FD32}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

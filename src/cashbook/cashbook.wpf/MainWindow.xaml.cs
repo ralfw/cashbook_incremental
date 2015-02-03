@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using cashbook.body;
+using cashbook.body.data;
+using eventstore;
 
 namespace cashbook.wpf
 {
@@ -22,6 +15,25 @@ namespace cashbook.wpf
         public MainWindow()
         {
             InitializeComponent();
+
+            TimeProvider.Now = () => DateTime.Now;
+
+            var es = new FileEventStore("events");
+            var repo = new Repository(es);
+            var cashbookFactory = new Func<Transaction[], Cashbook>(transactions => new Cashbook(transactions));
+            var body = new Body(repo, cashbookFactory);
+
+            var viewModel = new MainViewModel(body);
+            this.DataContext = viewModel;
+        }
+
+        private void UIElement_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox)
+            {
+                var tb = (TextBox) sender;
+                    tb.SelectAll();
+            }
         }
     }
 }

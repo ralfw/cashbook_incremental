@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
+using System.Windows;
 using System.Windows.Input;
+using cashbook.body;
 using cashbook.contracts.data;
 using cashbook.wpf.Annotations;
 
@@ -11,8 +12,10 @@ namespace cashbook.wpf
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private readonly Body _body;
+
+
         private DateTime _selectedMonth;
-        private readonly DelegateCommand _selectMonth;
 
         private BalanceSheet _shownBalanceSheet;
 
@@ -26,28 +29,24 @@ namespace cashbook.wpf
         public MainViewModel()
         {
             _selectedMonth = FirstOfMonth(DateTime.Today);
-            _selectMonth = new DelegateCommand(ShowSelectedMonth);
 
             _shownBalanceSheet = new BalanceSheet
             {
                 Month = _selectedMonth,
-                Items = new[]
-                {
-                    new BalanceSheet.Item()
-                    {
-                        Description = "description",
-                        RunningTotalValue = 10.0,
-                        TransactionDate = DateTime.Now,
-                        Value = 5.0
-                    }
-                }
+                Items = new BalanceSheet.Item[]{}
             };
 
-            _editAmount = 0.0;
-            _editDate = DateTime.Today;
-            _editDescription = "";
+            ClearEdit();
+
             _withdraw = new DelegateCommand(Withdraw, ValidateEdit);
             _deposit = new DelegateCommand(Deposit, ValidateEdit);
+        }
+
+        public MainViewModel(Body body)
+            : this()
+        {
+            this._body = body;
+            ShowSelectedMonth();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -59,15 +58,11 @@ namespace cashbook.wpf
             {
                 if (_selectedMonth != value)
                 {
-                    _selectedMonth = value;
+                    _selectedMonth = FirstOfMonth(value);
                     OnPropertyChanged("SelectedMonth");
+                    ShowSelectedMonth();
                 }
             }
-        }
-
-        public ICommand SelectMonth
-        {
-            get { return _selectMonth; }
         }
 
         public BalanceSheet ShownBalanceSheet
@@ -102,7 +97,7 @@ namespace cashbook.wpf
             {
                 if (_editDate != value)
                 {
-                    _editDate = value;
+                    _editDate = value.Date;
                     OnPropertyChanged("EditDate");
                     _withdraw.CheckPossibleCanExecuteChange();
                     _deposit.CheckPossibleCanExecuteChange();
@@ -152,18 +147,55 @@ namespace cashbook.wpf
 
         private void ShowSelectedMonth()
         {
-            throw new NotImplementedException();
+            if (_body == null)
+                return;
+
+            ShownBalanceSheet = _body.Load_monthly_balance_sheet(SelectedMonth);
         }
 
         private void Deposit()
         {
-            throw new NotImplementedException();
+            if (!ValidateEdit() || _body == null)
+                return;
+
+            _body.Deposit(EditDate, EditAmount, EditDescription, 
+                true,
+                _ =>
+                {
+                    ClearEdit();
+                    ShowSelectedMonth();
+                },
+                errormsg =>
+                {
+                    MessageBox.Show(errormsg, "could not withdraw", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
         }
 
         private void Withdraw()
         {
-            throw new NotImplementedException();
+            if (!ValidateEdit() || _body == null)
+                return;
+
+            _body.Withdraw(EditDate, EditAmount, EditDescription, 
+                true,
+                _ =>
+                {
+                    ClearEdit();
+                    ShowSelectedMonth();
+                },
+                errormsg =>
+                {
+                    MessageBox.Show(errormsg, "could not withdraw", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
         }
+
+        private void ClearEdit()
+        {
+            _editAmount = 0.0;
+            _editDate = DateTime.Today;
+            _editDescription = "";
+        }
+
 
         private bool ValidateEdit()
         {

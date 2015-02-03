@@ -87,7 +87,14 @@ namespace cashbook.wpf
 
         public IEnumerable<BalanceSheetItemViewModel> ShownBalanceSheetItems
         {
-            get { return ShownBalanceSheet.Items.Select(item => new BalanceSheetItemViewModel(item)); }
+            get
+            {
+                var lastIndex = ShownBalanceSheet.Items.Length - 1;
+                return
+                    ShownBalanceSheet.Items
+                        .Select((item, index) => 
+                            new BalanceSheetItemViewModel(item, index == 0 || index == lastIndex));
+            }
         }
 
         public DateTime EditDate
@@ -220,10 +227,12 @@ namespace cashbook.wpf
     public class BalanceSheetItemViewModel
     {
         private readonly BalanceSheet.Item _item;
+        private readonly bool _suppressAmount;
 
-        public BalanceSheetItemViewModel(BalanceSheet.Item item)
+        public BalanceSheetItemViewModel(BalanceSheet.Item item, bool suppressAmount)
         {
             _item = item;
+            _suppressAmount = suppressAmount;
         }
 
         public DateTime TransactionDate
@@ -236,14 +245,21 @@ namespace cashbook.wpf
             get { return _item.Description; }
         }
 
-        public decimal Value
+        public string Value
         {
-            get { return _item.Value; }
+            get
+            {
+                if (_suppressAmount)
+                    return "";
+
+                return _item.Value.ToString("0.00€");
+            }
         }
 
         public decimal RunningTotalValue
         {
             get { return _item.RunningTotalValue; }
         }
+
     }
 }

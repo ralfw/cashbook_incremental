@@ -32,7 +32,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding TransactionDate, StringFormat={}{0:dd.MM.yyyy}}" Header="Date" />
                     <DataGridTextColumn MinWidth="200" Binding="{Binding Description}" Header="Description" />
-                    <DataGridTextColumn MinWidth="50" Binding="{Binding Value, StringFormat={}{0:0.00€}}" Header="Amount" />
+                    <DataGridTextColumn MinWidth="50" Binding="{Binding Value}" Header="Amount" />
                     <DataGridTextColumn MinWidth="80" Binding="{Binding RunningTotalValue, StringFormat={}{0:0.00€}}" Header="Balance" />
                 </DataGrid.Columns>
             </DataGrid>

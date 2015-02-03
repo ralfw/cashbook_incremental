@@ -20,7 +20,7 @@ namespace cashbook.body
 		}
 
 
-		public void Make_deposit(DateTime transactionDate, double amount, string description) {
+		public void Make_deposit(DateTime transactionDate, decimal amount, string description) {
 			var e = new Event (transactionDate.ToContext(), 
 							   Eventnames.DepositMade.ToString(), 
 							   string.Format ("{0:s}\t{1}\t{2}", transactionDate, amount, description));
@@ -28,7 +28,7 @@ namespace cashbook.body
 		}
 
 
-		public void Make_withdrawal(DateTime transactionDate, double amount, string description) {
+		public void Make_withdrawal(DateTime transactionDate, decimal amount, string description) {
 			var e = new Event (transactionDate.ToContext(), 
 							   Eventnames.WithdrawalMade.ToString(), 
 							   string.Format ("{0:s}\t{1}\t{2}", transactionDate, amount, description));
@@ -44,7 +44,7 @@ namespace cashbook.body
 					Type = (Eventnames)Enum.Parse (typeof(Eventnames), e.Name) == Eventnames.DepositMade
 						   ? TransactionTypes.Deposit : TransactionTypes.Withdrawal,
 					TransactionDate = DateTime.Parse (fields [0]),
-					Amount = double.Parse (fields [1]),
+					Amount = decimal.Parse (fields [1]),
 					Description = fields [2]
 				};
 			}

@@ -27,7 +27,7 @@ namespace cashbook.body
 		}
 
 
-		public void Deposit(DateTime transactionDate, double amount, string description, bool force,
+		public void Deposit(DateTime transactionDate, decimal amount, string description, bool force,
 							Action<Balance> onSuccess, Action<string> onError
 		) {
 			Cashbook.Validate_transaction_date (transactionDate, force,
@@ -44,7 +44,7 @@ namespace cashbook.body
 		}
 
 
-		public void Withdraw(DateTime transactionDate, double amount, string description, bool force,
+		public void Withdraw(DateTime transactionDate, decimal amount, string description, bool force,
 							 Action<Balance> onSuccess, Action<string> onError
 		) {
 			Cashbook.Validate_transaction_date (transactionDate, force,

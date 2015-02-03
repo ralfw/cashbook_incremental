@@ -26,26 +26,26 @@ namespace cashbook.console.tests
 					new BalanceSheet.Item{
 						TransactionDate = month,
 						Description = "Deposit",
-						Value = 0.0,
-						RunningTotalValue = 100.0
+						Value = 0.0m,
+						RunningTotalValue = 100.0m
 					},
 					new BalanceSheet.Item{
 						TransactionDate = month.AddDays(1),
 						Description = "Taxi",
 						Value = -10,
-						RunningTotalValue = 90.0
+						RunningTotalValue = 90.0m
 					},
 					new BalanceSheet.Item{
 						TransactionDate = month.AddDays(2),
 						Description = "Final",
-						Value = 0.0,
-						RunningTotalValue = 90.0
+						Value = 0.0m,
+						RunningTotalValue = 90.0m
 					},				
 				}
 			};
 		}
 
-		public void Deposit (DateTime transactionDate, double amount, string description, bool force, Action<Balance> onSuccess, Action<string> onError)
+		public void Deposit (DateTime transactionDate, decimal amount, string description, bool force, Action<Balance> onSuccess, Action<string> onError)
 		{
 			Console.WriteLine ("Deposit received: {0}", description);
 			if (amount < 0)
@@ -54,7 +54,7 @@ namespace cashbook.console.tests
 				onSuccess (new Balance{ Month = transactionDate, Value = amount });
 		}
 
-		public void Withdraw (DateTime transactionDate, double amount, string description, bool force, Action<Balance> onSuccess, Action<string> onError)
+		public void Withdraw (DateTime transactionDate, decimal amount, string description, bool force, Action<Balance> onSuccess, Action<string> onError)
 		{
 			Console.WriteLine ("Withdrawal received: {0}", description);
 			if (amount > 0)

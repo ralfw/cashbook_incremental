@@ -10,8 +10,8 @@ namespace cashbook.contracts.data
 		public class Item {
 			public DateTime TransactionDate;
 			public string Description;
-			public double Value;
-			public double RunningTotalValue;
+			public decimal Value;
+			public decimal RunningTotalValue;
 		}
 	}	
 }

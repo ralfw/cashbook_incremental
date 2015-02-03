@@ -8,11 +8,11 @@ namespace cashbook.contracts
 		BalanceSheet Load_monthly_balance_sheet (DateTime month);
 
 
-		void Deposit (DateTime transactionDate, double amount, string description, bool force,
+		void Deposit (DateTime transactionDate, decimal amount, string description, bool force,
 		             Action<Balance> onSuccess, Action<string> onError);
 
 
-		void Withdraw (DateTime transactionDate, double amount, string description, bool force,
+		void Withdraw (DateTime transactionDate, decimal amount, string description, bool force,
 		              Action<Balance> onSuccess, Action<string> onError);
 	}
 }

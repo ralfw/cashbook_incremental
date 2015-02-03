@@ -14,14 +14,13 @@ namespace cashbook.wpf
     {
         private readonly Body _body;
 
-
         private DateTime _selectedMonth;
 
         private BalanceSheet _shownBalanceSheet;
 
         private DateTime _editDate;
         private string _editDescription;
-        private double _editAmount;
+        private decimal _editAmount;
         private readonly DelegateCommand _withdraw;
         private readonly DelegateCommand _deposit;
 
@@ -120,12 +119,12 @@ namespace cashbook.wpf
             }
         }
 
-        public double EditAmount
+        public decimal EditAmount
         {
             get { return _editAmount; }
             set
             {
-                if (Math.Abs(_editAmount - value) >= 0.01)
+                if (Math.Abs(_editAmount - value) >= 0.01m)
                 {
                     _editAmount = value;
                     OnPropertyChanged("EditAmount");
@@ -191,7 +190,7 @@ namespace cashbook.wpf
 
         private void ClearEdit()
         {
-            _editAmount = 0.0;
+            _editAmount = 0.0m;
             _editDate = DateTime.Today;
             _editDescription = "";
         }
@@ -239,12 +238,12 @@ namespace cashbook.wpf
             get { return _item.Description; }
         }
 
-        public double Value
+        public decimal Value
         {
             get { return _item.Value; }
         }
 
-        public double RunningTotalValue
+        public decimal RunningTotalValue
         {
             get { return _item.RunningTotalValue; }
         }

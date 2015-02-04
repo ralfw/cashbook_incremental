@@ -20,6 +20,16 @@ namespace cashbook.body
 		}
 
 
+		public ValidationReport Validate_candidate_transaction (DateTime transactionDate, string description, decimal amount, bool force) {
+			return new ValidationReport{ 
+				DateValidatedForDeposit = CashbookValidation.Validate_transaction_date (TransactionTypes.Deposit, transactionDate, force),
+				DateValidatedForWithdrawal =  CashbookValidation.Validate_transaction_date (TransactionTypes.Withdrawal, transactionDate, force),
+				DescriptionValidatedForWithdrawal = CashbookValidation.Validate_transaction_description(TransactionTypes.Withdrawal, description),
+				AmountValidated = CashbookValidation.Validate_transaction_amount(amount),
+			};
+		}
+			
+
 		public BalanceSheet Load_monthly_balance_sheet(DateTime month) {
 			var allTx = this.repo.Load_all_transactions ();
 			var cb = this.cashbookFactory (allTx.ToArray());
@@ -30,7 +40,7 @@ namespace cashbook.body
 		public void Deposit(DateTime transactionDate, decimal amount, string description, bool force,
 							Action<Balance> onSuccess, Action<string> onError
 		) {
-			Cashbook.Validate_transaction_data (TransactionTypes.Deposit,  transactionDate, description, amount, force,
+			CashbookValidation.Validate_transaction_data (TransactionTypes.Deposit,  transactionDate, description, amount, force,
 				() => {
                     this.repo.Make_deposit(transactionDate, Math.Abs(amount), description); 
                     
@@ -47,7 +57,7 @@ namespace cashbook.body
 		public void Withdraw(DateTime transactionDate, decimal amount, string description, bool force,
 							 Action<Balance> onSuccess, Action<string> onError
 		) {
-            Cashbook.Validate_transaction_data(TransactionTypes.Withdrawal, transactionDate, description, amount, force,
+			CashbookValidation.Validate_transaction_data(TransactionTypes.Withdrawal, transactionDate, description, amount, force,
 				() => {
 					this.repo.Make_withdrawal(transactionDate, Math.Abs(amount), description); 
 
@@ -58,6 +68,11 @@ namespace cashbook.body
 					onSuccess(newBalance);
 				},
 				onError);
+		}
+
+
+		public ExportReport Export(DateTime fromMonth, DateTime toMonth) {
+			return new ExportReport{ Filename = "noexport.csv", NumberOfTransactions = DateTime.Now.Second };
 		}
 	}
 }

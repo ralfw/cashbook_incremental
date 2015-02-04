@@ -17,6 +17,10 @@ namespace cashbook.console.tests
 
 	class MockBody : IBody {
 		#region IBody implementation
+		public ValidationReport Validate_candidate_transaction (DateTime transactionDate, string description, decimal amount, bool force) {
+			throw new NotImplementedException ();
+		}
+
 
 		public BalanceSheet Load_monthly_balance_sheet (DateTime month)
 		{
@@ -63,6 +67,11 @@ namespace cashbook.console.tests
 				onSuccess (new Balance{ Month = transactionDate, Value = amount });
 		}
 
+
+		public ExportReport Export(DateTime fromDate, DateTime toDate) {
+			return new ExportReport{ Filename = string.Format("{0}---{1}.csv", fromDate, toDate), 
+									 NumberOfTransactions = 42 };
+		}
 		#endregion
 	}
 }

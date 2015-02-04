@@ -35,6 +35,8 @@
     <Compile Include="IBody.cs" />
     <Compile Include="data\Balance.cs" />
     <Compile Include="data\BalanceSheet.cs" />
+    <Compile Include="data\ExportReport.cs" />
+    <Compile Include="data\ValidationReport.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

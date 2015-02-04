@@ -39,6 +39,7 @@
     <Compile Include="TimeProvider.cs" />
     <Compile Include="Cashbook.cs" />
     <Compile Include="CashbookExtensions.cs" />
+    <Compile Include="CashbookValidation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

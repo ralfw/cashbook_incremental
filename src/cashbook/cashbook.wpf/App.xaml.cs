@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace cashbook.wpf
 {
@@ -12,5 +10,12 @@ namespace cashbook.wpf
     /// </summary>
     public partial class App : Application
     {
+        static App()
+        {
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+                typeof(FrameworkElement),
+                new FrameworkPropertyMetadata(
+                    XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+        }
     }
 }

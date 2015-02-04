@@ -8,7 +8,6 @@ using System.Linq;
 
 namespace cashbook.body
 {
-
 	public class Cashbook {
 	    readonly Transaction[] transactions;
 
@@ -79,21 +78,6 @@ namespace cashbook.body
 	                                RunningTotalValue = balances.Item2.Value}});
             return allItems;
         }
-
-
-	    public static void Validate_transaction_data(TransactionTypes type, DateTime txDate, string description, decimal amount, bool force, 
-			                                         Action onValid, Action<string> onInvalid) {
-			if (txDate > TimeProvider.Now())
-				onInvalid ("Cannot execute transactions in the future!");
-			else if (!force && (txDate.Year < TimeProvider.Now().Year || txDate.Month < TimeProvider.Now().Month))
-				onInvalid ("Cannot execute transactions before current month! Use -force to override.");
-			else if (type == TransactionTypes.Withdrawal && string.IsNullOrEmpty((description)))
-                onInvalid("Cannot execute withdrawal without a description!");
-            else if (amount == 0.0m)
-                onInvalid("Cannot execute transaction with 0.0 amount!");
-            else
-				onValid ();
-		}
 
 
 		public Balance Calculate_end_of_month_balance(DateTime date) {

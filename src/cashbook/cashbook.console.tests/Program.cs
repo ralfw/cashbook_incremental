@@ -17,6 +17,10 @@ namespace cashbook.console.tests
 
 	class MockBody : IBody {
 		#region IBody implementation
+		public ValidationReport Validate_candidate_transaction (DateTime transactionDate, string description, decimal amount, bool force) {
+			throw new NotImplementedException ();
+		}
+
 
 		public BalanceSheet Load_monthly_balance_sheet (DateTime month)
 		{

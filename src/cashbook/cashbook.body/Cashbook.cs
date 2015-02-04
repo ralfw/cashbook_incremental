@@ -81,13 +81,17 @@ namespace cashbook.body
         }
 
 
-	    public static void Validate_transaction_date(DateTime txDate, bool force, 
-			Action onValid, Action<string> onInvalid) {
+	    public static void Validate_transaction_data(TransactionTypes type, DateTime txDate, string description, decimal amount, bool force, 
+			                                         Action onValid, Action<string> onInvalid) {
 			if (txDate > TimeProvider.Now())
 				onInvalid ("Cannot execute transactions in the future!");
 			else if (!force && (txDate.Year < TimeProvider.Now().Year || txDate.Month < TimeProvider.Now().Month))
-				onInvalid ("Cannot execute transactions before current month. Use -force to override.");
-			else
+				onInvalid ("Cannot execute transactions before current month! Use -force to override.");
+			else if (type == TransactionTypes.Withdrawal && string.IsNullOrEmpty((description)))
+                onInvalid("Cannot execute withdrawal without a description!");
+            else if (amount == 0.0m)
+                onInvalid("Cannot execute transaction with 0.0 amount!");
+            else
 				onValid ();
 		}
 

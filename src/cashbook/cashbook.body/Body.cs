@@ -30,7 +30,7 @@ namespace cashbook.body
 		public void Deposit(DateTime transactionDate, decimal amount, string description, bool force,
 							Action<Balance> onSuccess, Action<string> onError
 		) {
-			Cashbook.Validate_transaction_date (transactionDate, force,
+			Cashbook.Validate_transaction_data (TransactionTypes.Deposit,  transactionDate, description, amount, force,
 				() => {
                     this.repo.Make_deposit(transactionDate, Math.Abs(amount), description); 
                     
@@ -47,7 +47,7 @@ namespace cashbook.body
 		public void Withdraw(DateTime transactionDate, decimal amount, string description, bool force,
 							 Action<Balance> onSuccess, Action<string> onError
 		) {
-			Cashbook.Validate_transaction_date (transactionDate, force,
+            Cashbook.Validate_transaction_data(TransactionTypes.Withdrawal, transactionDate, description, amount, force,
 				() => {
 					this.repo.Make_withdrawal(transactionDate, Math.Abs(amount), description); 
 

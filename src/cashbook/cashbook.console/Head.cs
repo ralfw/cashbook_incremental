@@ -79,8 +79,13 @@ namespace cashbook.console
 
 
 		[Verb]
-		void Export() {
-			Console.WriteLine ("export...");
+		void Export(
+			[Required, Aliases("f,from,first,m,month")] DateTime fromMonth, 
+			[Aliases("t,to,l,last,u,until")] 		DateTime toMonth) 
+		{
+			var report = body.Export (fromMonth, toMonth);
+
+			Console.WriteLine ("Exported {0} transactions to {1}", report.NumberOfTransactions,  report.Filename);
 		}
 	}
 }

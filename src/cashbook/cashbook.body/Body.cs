@@ -59,5 +59,10 @@ namespace cashbook.body
 				},
 				onError);
 		}
+
+
+		public ExportReport Export(DateTime fromMonth, DateTime toMonth) {
+			return new ExportReport{ Filename = "noexport.csv", NumberOfTransactions = DateTime.Now.Second };
+		}
 	}
 }

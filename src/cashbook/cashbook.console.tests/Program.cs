@@ -63,6 +63,11 @@ namespace cashbook.console.tests
 				onSuccess (new Balance{ Month = transactionDate, Value = amount });
 		}
 
+
+		public ExportReport Export(DateTime fromDate, DateTime toDate) {
+			return new ExportReport{ Filename = string.Format("{0}---{1}.csv", fromDate, toDate), 
+									 NumberOfTransactions = 42 };
+		}
 		#endregion
 	}
 }

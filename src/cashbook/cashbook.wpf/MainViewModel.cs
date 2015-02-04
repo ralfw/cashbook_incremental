@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,8 +11,11 @@ using cashbook.wpf.Annotations;
 
 namespace cashbook.wpf
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
         private readonly IBody _body;
 
         private DateTime _selectedMonth;
@@ -25,11 +29,13 @@ namespace cashbook.wpf
         private readonly DelegateCommand _withdraw;
         private readonly DelegateCommand _deposit;
 
+        private readonly Dictionary<string, ICollection<string>>
+            _validationErrors = new Dictionary<string, ICollection<string>>();
 
         public MainViewModel()
         {
-            _withdraw = new DelegateCommand(Withdraw);
-            _deposit = new DelegateCommand(Deposit);
+            _withdraw = new DelegateCommand(Withdraw, () => !HasErrors);
+            _deposit = new DelegateCommand(Deposit, () => !HasErrors);
 
             _selectedMonth = FirstOfMonth(DateTime.Today);
 
@@ -48,8 +54,6 @@ namespace cashbook.wpf
             this._body = body;
             ShowSelectedMonth();
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public DateTime SelectedMonth
         {
@@ -159,6 +163,20 @@ namespace cashbook.wpf
             get { return _deposit; }
         }
 
+        public IEnumerable GetErrors(string propertyName)
+        {
+            if (string.IsNullOrEmpty(propertyName)
+                || !_validationErrors.ContainsKey(propertyName))
+                return null;
+
+            return _validationErrors[propertyName];
+        }
+
+        public bool HasErrors
+        {
+            get { return _validationErrors.Count > 0; }
+        }
+
         private void ShowSelectedMonth()
         {
             if (_body == null)
@@ -209,12 +227,56 @@ namespace cashbook.wpf
             EditDescription = "";
         }
 
+        private void ValidateInput()
+        {
+            if (_body == null)
+                return;
+
+            var validationReport = _body.Validate_candidate_transaction(EditDate, EditDescription, EditAmount, EditForce);
+
+            if (validationReport.AmountValidated.IsValid)
+                ClearErrors("EditAmount");
+            else
+                SetErrors("EditAmount", validationReport.AmountValidated.Explanation);
+
+            if (validationReport.DescriptionValidatedForWithdrawal.IsValid)
+                ClearErrors("EditDescription");
+            else
+                SetErrors("EditDescription", validationReport.DescriptionValidatedForWithdrawal.Explanation);
+        }
+
+        private void ClearErrors(string propertyName)
+        {
+            _validationErrors.Remove(propertyName);
+            OnErrorsChanged(propertyName);
+        }
+
+        private void SetErrors(string propertyName, params string[] messages)
+        {
+            if (messages.Length == 0)
+                _validationErrors.Remove(propertyName);
+            else
+                _validationErrors[propertyName] = messages;
+
+            OnErrorsChanged(propertyName);
+        }
+
+        private void OnErrorsChanged(string propertyName)
+        {
+            if (ErrorsChanged != null)
+                ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+
+            _withdraw.CheckPossibleCanExecuteChange();
+            _deposit.CheckPossibleCanExecuteChange();
+        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+
+            ValidateInput();
         }
 
         private static DateTime FirstOfMonth(DateTime time)
@@ -222,6 +284,7 @@ namespace cashbook.wpf
             var day = time.Date;
             return day.AddDays(-day.Day + 1);
         }
+
     }
 
     public class BalanceSheetItemViewModel

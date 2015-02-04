@@ -32,8 +32,30 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding TransactionDate, StringFormat={}{0:dd.MM.yyyy}}" Header="Date" />
                     <DataGridTextColumn MinWidth="200" Binding="{Binding Description}" Header="Description" />
-                    <DataGridTextColumn MinWidth="50" Binding="{Binding Value}" Header="Amount" />
-                    <DataGridTextColumn MinWidth="80" Binding="{Binding RunningTotalValue, StringFormat={}{0:0.00€}}" Header="Balance" />
+                    <DataGridTemplateColumn MinWidth="50" Header="Amount">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Value}" TextAlignment="Right" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn MinWidth="80" Header="Balance">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding RunningTotalValue, StringFormat={}{0:0.00€}}" TextAlignment="Right" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

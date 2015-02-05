@@ -45,6 +45,8 @@ namespace cashbook.body
 		) {
 			CashbookValidation.Validate_transaction_data (TransactionTypes.Deposit,  transactionDate, description, amount, force,
 				() => {
+					description = string.IsNullOrEmpty(description) ? "Deposit" : description;
+
                     this.repo.Make_deposit(transactionDate, Math.Abs(amount), description); 
                     
                     var transactions = this.repo.Load_all_transactions().ToArray();

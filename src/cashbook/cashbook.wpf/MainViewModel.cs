@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,8 +11,17 @@ using cashbook.wpf.Annotations;
 
 namespace cashbook.wpf
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public enum TransactionType
     {
+        Withdraw,
+        Deposit
+    }
+
+    public class MainViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
         private readonly IBody _body;
 
         private DateTime _selectedMonth;
@@ -22,14 +32,15 @@ namespace cashbook.wpf
         private DateTime _editDate;
         private string _editDescription;
         private decimal _editAmount;
-        private readonly DelegateCommand _withdraw;
-        private readonly DelegateCommand _deposit;
+        private TransactionType _editTransactionType;
+        private readonly DelegateCommand _transactionCommand;
 
+        private readonly Dictionary<string, ICollection<string>>
+            _validationErrors = new Dictionary<string, ICollection<string>>();
 
         public MainViewModel()
         {
-            _withdraw = new DelegateCommand(Withdraw);
-            _deposit = new DelegateCommand(Deposit);
+            _transactionCommand = new DelegateCommand(ProcessTransaction, () => !HasErrors);
 
             _selectedMonth = FirstOfMonth(DateTime.Today);
 
@@ -48,8 +59,6 @@ namespace cashbook.wpf
             this._body = body;
             ShowSelectedMonth();
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public DateTime SelectedMonth
         {
@@ -149,14 +158,36 @@ namespace cashbook.wpf
             }
         }
 
-        public ICommand WithdrawCommand
+        public TransactionType EditTransactionType
         {
-            get { return _withdraw; }
+            get { return _editTransactionType; }
+            set
+            {
+                if (_editTransactionType != value)
+                {
+                    _editTransactionType = value;
+                    OnPropertyChanged("EditTransactionType");
+                }
+            }
         }
 
-        public ICommand DepositCommand
+        public ICommand TransactionCommand
         {
-            get { return _deposit; }
+            get { return _transactionCommand; }
+        }
+
+        public IEnumerable GetErrors(string propertyName)
+        {
+            if (string.IsNullOrEmpty(propertyName)
+                || !_validationErrors.ContainsKey(propertyName))
+                return null;
+
+            return _validationErrors[propertyName];
+        }
+
+        public bool HasErrors
+        {
+            get { return _validationErrors.Count > 0; }
         }
 
         private void ShowSelectedMonth()
@@ -167,38 +198,40 @@ namespace cashbook.wpf
             ShownBalanceSheet = _body.Load_monthly_balance_sheet(SelectedMonth);
         }
 
-        private void Deposit()
+        private void ProcessTransaction()
         {
             if (_body == null)
                 return;
 
-            _body.Deposit(EditDate, EditAmount, EditDescription, EditForce,
-                _ =>
-                {
-                    ClearEdit();
-                    ShowSelectedMonth();
-                },
-                errormsg =>
-                {
-                    MessageBox.Show(errormsg, "could not withdraw", MessageBoxButton.OK, MessageBoxImage.Error);
-                });
+            switch (EditTransactionType)
+            {
+                case TransactionType.Withdraw:
+                    _body.Withdraw(EditDate, EditAmount, EditDescription, EditForce,
+                        UpdateUI, ShowErrorMessage("could not withdraw"));
+                    break;
+                case TransactionType.Deposit:
+                    _body.Deposit(EditDate, EditAmount, EditDescription, EditForce,
+                        UpdateUI, ShowErrorMessage("could not deposit"));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
-        private void Withdraw()
+        private void UpdateUI()
         {
-            if (_body == null)
-                return;
+            ClearEdit();
+            ShowSelectedMonth();
+        }
 
-            _body.Withdraw(EditDate, EditAmount, EditDescription, EditForce,
-                _ =>
-                {
-                    ClearEdit();
-                    ShowSelectedMonth();
-                },
-                errormsg =>
-                {
-                    MessageBox.Show(errormsg, "could not withdraw", MessageBoxButton.OK, MessageBoxImage.Error);
-                });
+        private void UpdateUI(Balance ignore)
+        {
+            UpdateUI();
+        }
+
+        private Action<string> ShowErrorMessage(string caption)
+        {
+            return errormsg => MessageBox.Show(errormsg, caption, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ClearEdit()
@@ -207,14 +240,73 @@ namespace cashbook.wpf
             EditForce = false;
             EditDate = DateTime.Today;
             EditDescription = "";
+            EditTransactionType = TransactionType.Withdraw;
         }
 
+        private void ValidateInput()
+        {
+            if (_body == null)
+                return;
+
+            ClearAllErrors();
+            var validationReport = _body.Validate_candidate_transaction(EditDate, EditDescription, EditAmount, EditForce);
+
+            ValidateEditField(validationReport.AmountValidated, "EditAmount");
+
+            switch (EditTransactionType)
+            {
+                case TransactionType.Withdraw:
+                    ValidateEditField(validationReport.DescriptionValidatedForWithdrawal, "EditDescription");
+                    ValidateEditField(validationReport.DateValidatedForWithdrawal, "EditDate");
+                    break;
+                case TransactionType.Deposit:
+                    ValidateEditField(validationReport.DateValidatedForDeposit, "EditDate");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+        }
+
+        private void ValidateEditField(ValidationReport.ValidationResult validation, string propertyName)
+        {
+            if (!validation.IsValid)
+                SetErrors(propertyName, validation.Explanation);
+        }
+
+        private void ClearAllErrors()
+        {
+            _validationErrors.Clear();
+            OnErrorsChanged("EditAmount");
+            OnErrorsChanged("EditDescription");
+            OnErrorsChanged("EditDate");
+        }
+
+        private void SetErrors(string propertyName, params string[] messages)
+        {
+            if (messages.Length == 0)
+                _validationErrors.Remove(propertyName);
+            else
+                _validationErrors[propertyName] = messages;
+
+            OnErrorsChanged(propertyName);
+        }
+
+        private void OnErrorsChanged(string propertyName)
+        {
+            if (ErrorsChanged != null)
+                ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+
+            _transactionCommand.CheckPossibleCanExecuteChange();
+        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+
+            ValidateInput();
         }
 
         private static DateTime FirstOfMonth(DateTime time)
@@ -222,6 +314,7 @@ namespace cashbook.wpf
             var day = time.Date;
             return day.AddDays(-day.Day + 1);
         }
+
     }
 
     public class BalanceSheetItemViewModel

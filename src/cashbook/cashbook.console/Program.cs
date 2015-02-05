@@ -15,7 +15,8 @@ namespace cashbook.console
 			var es = new FileEventStore ("events");
 			var repo = new Repository (es);
 			var cashbookFactory = new Func<Transaction[], Cashbook>(transactions => new Cashbook (transactions));
-			var body = new Body (repo, cashbookFactory);
+			var csvProvider = new CSVProvider ();
+			var body = new Body (repo, cashbookFactory, csvProvider);
 			var head = new Head (body);
 
 			head.Run (args);

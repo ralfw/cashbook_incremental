@@ -5,6 +5,7 @@ using cashbook.contracts.data;
 using System.Collections.Generic;
 using cashbook.body.data;
 using System.Linq;
+using System.IO;
 using cashbook.contracts;
 
 namespace cashbook.body
@@ -13,8 +14,10 @@ namespace cashbook.body
 	{
 	    readonly Repository repo;
 	    readonly Func<Transaction[], Cashbook> cashbookFactory;
+		CSVProvider csvProvider;
 
-		public Body(Repository repo, Func<Transaction[],Cashbook> cashbookFactory) {
+		public Body(Repository repo, Func<Transaction[],Cashbook> cashbookFactory, CSVProvider csvProvider) {
+			this.csvProvider = csvProvider;
 			this.cashbookFactory = cashbookFactory;
 			this.repo = repo;
 		}
@@ -72,7 +75,17 @@ namespace cashbook.body
 
 
 		public ExportReport Export(DateTime fromMonth, DateTime toMonth) {
-			return new ExportReport{ Filename = "noexport.csv", NumberOfTransactions = DateTime.Now.Second };
+			var allTx = this.repo.Load_all_transactions ().ToArray();
+			var cashbook = this.cashbookFactory (allTx);
+
+			var months = fromMonth.ExtendTo (toMonth);
+			var txItems = cashbook.Get_balance_sheet_items_in_month_range (months);
+
+			var filepath = string.Format ("cashbook-{0:yyyyMM}-{1:yyyyMM}.csv", fromMonth, toMonth);
+			this.csvProvider.Export (txItems, filepath);
+		
+			return new ExportReport{ Filename = filepath, NumberOfTransactions =  txItems.Length };
 		}
 	}
+
 }

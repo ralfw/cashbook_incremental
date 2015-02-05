@@ -17,7 +17,7 @@ namespace cashbook.body
 
 
 		public BalanceSheet this[DateTime month] { get {
-				var nmonth = month.Normalize ();
+				var nmonth = month.ToMonth ();
 			    var txItems = Get_balance_sheet_items_for_month(nmonth);
 			    var balances = Calculate_balances_at_start_and_end_of_month(nmonth);
 			    var allItems = Assemble_balance_sheet_items_for_month(balances, txItems, nmonth);
@@ -25,10 +25,11 @@ namespace cashbook.body
 			}
 		}
 
+	
 	    private BalanceSheet.Item[] Get_balance_sheet_items_for_month(DateTime nmonth)
 	    {
 	        return this.transactions
-	                        .Where(tx => tx.TransactionDate.Normalize() == nmonth)
+	                        .Where(tx => tx.TransactionDate.ToMonth() == nmonth)
 	                        .Select(tx => new BalanceSheet.Item {
 	                                TransactionDate = tx.TransactionDate,
 	                                Description = tx.Description,
@@ -80,6 +81,13 @@ namespace cashbook.body
         }
 
 
+		public BalanceSheet.Item[] Get_balance_sheet_items_in_month_range(DateTime[] months) {
+
+			var balanceSheets = months.Select (m => this [m]);
+			return balanceSheets.SelectMany (bs => bs.TransactionItems).ToArray();
+		}
+
+
 		public Balance Calculate_end_of_month_balance(DateTime date) {
 			var monthlyBalances = Calculate_monthly_balances (this.transactions);
 
@@ -90,7 +98,7 @@ namespace cashbook.body
 
 		public IEnumerable<Balance> Calculate_monthly_balances(IEnumerable<Transaction> transactions) {
 			// pro monat die tx summieren
-			var monthlySums = transactions.Select(tx => new { Month = tx.TransactionDate.Normalize(), Amount = tx.Value})
+			var monthlySums = transactions.Select(tx => new { Month = tx.TransactionDate.ToMonth(), Amount = tx.Value})
 				.GroupBy(tx => tx.Month)
 				.Select(g => new {Month = g.Key, Sum = g.Sum(tx => tx.Amount)});										  
 			// monatsendstände akkumulieren

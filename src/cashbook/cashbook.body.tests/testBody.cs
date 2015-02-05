@@ -17,7 +17,7 @@ namespace cashbook.body.tests
 
 			var es = new eventstore.InMemoryEventStore ();
 			var repo = new Repository (es);
-			this.body = new Body (repo, txs => new Cashbook(txs));
+			this.body = new Body (repo, txs => new Cashbook(txs), null);
 		}
 			
 
@@ -31,14 +31,14 @@ namespace cashbook.body.tests
 
 			Balance result = null;
 
-			this.body.Withdraw (new DateTime (2014, 12, 2), 42, "", false,
+			this.body.Withdraw (new DateTime (2014, 12, 2), 42, "x", false,
 				_ => result = _,
 				null);
 
 			Assert.AreEqual (new DateTime (2014, 12, 1), result.Month);
 			Assert.AreEqual (58, result.Value);
 
-			this.body.Withdraw (new DateTime (2014, 12, 10), 10, "", false,
+			this.body.Withdraw (new DateTime (2014, 12, 10), 10, "x", false,
 				_ => result = _,
 				null);
 			Assert.AreEqual (48, result.Value);
@@ -106,10 +106,10 @@ namespace cashbook.body.tests
 			TimeProvider.Now = () => new DateTime(2014,12,31);
 
 			this.body.Deposit (new DateTime (2014, 11, 2), 100, "", true, _ => {}, null);
-			this.body.Withdraw (new DateTime (2014, 11, 10), 10, "", true, _ => {}, null);
-			this.body.Withdraw (new DateTime (2014, 12, 3), 10, "", true, _ => {}, null);
-			this.body.Withdraw (new DateTime (2014, 12, 11), 5, "", true, _ => {}, null);
-			this.body.Withdraw (new DateTime (2014, 12, 22), 5, "", true, _ => {}, null);
+			this.body.Withdraw (new DateTime (2014, 11, 10), 10, "x", true, _ => {}, null);
+			this.body.Withdraw (new DateTime (2014, 12, 3), 10, "x", true, _ => {}, null);
+			this.body.Withdraw (new DateTime (2014, 12, 11), 5, "x", true, _ => {}, null);
+			this.body.Withdraw (new DateTime (2014, 12, 22), 5, "x", true, _ => {}, null);
 
 			var bs = this.body.Load_monthly_balance_sheet (new DateTime (2014, 11, 10));
 			Assert.AreEqual(new DateTime(2014, 11, 1), bs.Month);

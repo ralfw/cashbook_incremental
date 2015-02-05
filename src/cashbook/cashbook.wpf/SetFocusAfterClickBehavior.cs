@@ -30,6 +30,19 @@ namespace cashbook.wpf
         void AssociatedButtonClick(object sender, RoutedEventArgs e)
         {
             Keyboard.Focus(FocusElement);
+
+            if (FocusElement is DatePicker)
+            {
+                // HACK: get the date-picker to focus the textbox-part by sending a Key.Up
+                var eventArgs = new KeyEventArgs(
+                    Keyboard.PrimaryDevice,
+                    Keyboard.PrimaryDevice.ActiveSource,
+                    0,
+                    Key.Up) 
+                    {RoutedEvent = UIElement.KeyDownEvent};
+
+                FocusElement.RaiseEvent(eventArgs);                
+            }
         }
 
         public Control FocusElement

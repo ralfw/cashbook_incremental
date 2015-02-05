@@ -8,9 +8,8 @@ using System.Linq;
 
 namespace cashbook.body
 {
-
 	public static class CashbookExtensions {
-		public static DateTime Normalize(this DateTime date) {
+		public static DateTime ToMonth(this DateTime date) {
 			return new DateTime (date.Year, date.Month, 1);
 		}
 	}

@@ -5,6 +5,7 @@ using cashbook.contracts.data;
 using System.Collections.Generic;
 using cashbook.body.data;
 using System.Linq;
+using System.IO;
 using cashbook.contracts;
 
 namespace cashbook.body
@@ -72,7 +73,42 @@ namespace cashbook.body
 
 
 		public ExportReport Export(DateTime fromMonth, DateTime toMonth) {
-			return new ExportReport{ Filename = "noexport.csv", NumberOfTransactions = DateTime.Now.Second };
+			// create month range
+			if (toMonth == DateTime.MinValue) toMonth = fromMonth;
+			fromMonth = fromMonth.ToMonth ();
+			toMonth = toMonth.ToMonth ();
+
+			if (toMonth < fromMonth) {
+				var t = toMonth;
+				toMonth = fromMonth;
+				fromMonth = t;
+			}
+
+			var months = new List<DateTime> ();
+			var currMonth = fromMonth;
+			while (currMonth <= toMonth) {
+				months.Add (currMonth);
+				currMonth = currMonth.AddMonths (1);
+			}
+				
+			// get balance sheets for month range
+			var allTx = this.repo.Load_all_transactions ();
+			var cb = this.cashbookFactory (allTx.ToArray());
+			var balanceSheets = months.Select (m => cb [m]);
+
+			// extract transaction items
+			var txItems = balanceSheets.SelectMany (bs => bs.TransactionItems).ToArray();
+
+			// create filename
+			var filename = string.Format ("cashbook-{0:yyyyMM}-{1:yyyyMM}.csv", fromMonth, toMonth);
+
+			// write items to file
+			using(var sw = new StreamWriter(filename)) {
+				foreach(var txi in txItems)
+					sw.WriteLine("{0:d};\"{1}\";{2:f}", txi.TransactionDate, txi.Description, txi.Value);
+			}
+				
+			return new ExportReport{ Filename = filename, NumberOfTransactions =  txItems.Length };
 		}
 	}
 }

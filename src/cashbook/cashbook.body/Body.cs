@@ -14,8 +14,10 @@ namespace cashbook.body
 	{
 	    readonly Repository repo;
 	    readonly Func<Transaction[], Cashbook> cashbookFactory;
+		CSVProvider csvProvider;
 
-		public Body(Repository repo, Func<Transaction[],Cashbook> cashbookFactory) {
+		public Body(Repository repo, Func<Transaction[],Cashbook> cashbookFactory, CSVProvider csvProvider) {
+			this.csvProvider = csvProvider;
 			this.cashbookFactory = cashbookFactory;
 			this.repo = repo;
 		}
@@ -73,42 +75,17 @@ namespace cashbook.body
 
 
 		public ExportReport Export(DateTime fromMonth, DateTime toMonth) {
-			// create month range
-			if (toMonth == DateTime.MinValue) toMonth = fromMonth;
-			fromMonth = fromMonth.ToMonth ();
-			toMonth = toMonth.ToMonth ();
+			var allTx = this.repo.Load_all_transactions ().ToArray();
+			var cashbook = this.cashbookFactory (allTx);
 
-			if (toMonth < fromMonth) {
-				var t = toMonth;
-				toMonth = fromMonth;
-				fromMonth = t;
-			}
+			var months = fromMonth.ExtendTo (toMonth);
+			var txItems = cashbook.Get_balance_sheet_items_in_month_range (months);
 
-			var months = new List<DateTime> ();
-			var currMonth = fromMonth;
-			while (currMonth <= toMonth) {
-				months.Add (currMonth);
-				currMonth = currMonth.AddMonths (1);
-			}
-				
-			// get balance sheets for month range
-			var allTx = this.repo.Load_all_transactions ();
-			var cb = this.cashbookFactory (allTx.ToArray());
-			var balanceSheets = months.Select (m => cb [m]);
-
-			// extract transaction items
-			var txItems = balanceSheets.SelectMany (bs => bs.TransactionItems).ToArray();
-
-			// create filename
-			var filename = string.Format ("cashbook-{0:yyyyMM}-{1:yyyyMM}.csv", fromMonth, toMonth);
-
-			// write items to file
-			using(var sw = new StreamWriter(filename)) {
-				foreach(var txi in txItems)
-					sw.WriteLine("{0:d};\"{1}\";{2:f}", txi.TransactionDate, txi.Description, txi.Value);
-			}
-				
-			return new ExportReport{ Filename = filename, NumberOfTransactions =  txItems.Length };
+			var filepath = string.Format ("cashbook-{0:yyyyMM}-{1:yyyyMM}.csv", fromMonth, toMonth);
+			this.csvProvider.Export (txItems, filepath);
+		
+			return new ExportReport{ Filename = filepath, NumberOfTransactions =  txItems.Length };
 		}
 	}
+
 }

@@ -25,6 +25,7 @@ namespace cashbook.body
 			}
 		}
 
+	
 	    private BalanceSheet.Item[] Get_balance_sheet_items_for_month(DateTime nmonth)
 	    {
 	        return this.transactions
@@ -78,6 +79,13 @@ namespace cashbook.body
 	                                RunningTotalValue = balances.Item2.Value}});
             return allItems;
         }
+
+
+		public BalanceSheet.Item[] Get_balance_sheet_items_in_month_range(DateTime[] months) {
+
+			var balanceSheets = months.Select (m => this [m]);
+			return balanceSheets.SelectMany (bs => bs.TransactionItems).ToArray();
+		}
 
 
 		public Balance Calculate_end_of_month_balance(DateTime date) {

@@ -40,6 +40,7 @@
     <Compile Include="Cashbook.cs" />
     <Compile Include="CashbookExtensions.cs" />
     <Compile Include="CashbookValidation.cs" />
+    <Compile Include="CSVProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

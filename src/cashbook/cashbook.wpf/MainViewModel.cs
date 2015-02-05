@@ -207,31 +207,31 @@ namespace cashbook.wpf
             {
                 case TransactionType.Withdraw:
                     _body.Withdraw(EditDate, EditAmount, EditDescription, EditForce,
-                        _ =>
-                        {
-                            ClearEdit();
-                            ShowSelectedMonth();
-                        },
-                        errormsg =>
-                        {
-                            MessageBox.Show(errormsg, "could not withdraw", MessageBoxButton.OK, MessageBoxImage.Error);
-                        });
+                        UpdateUI, ShowErrorMessage("could not withdraw"));
                     break;
                 case TransactionType.Deposit:
                     _body.Deposit(EditDate, EditAmount, EditDescription, EditForce,
-                        _ =>
-                        {
-                            ClearEdit();
-                            ShowSelectedMonth();
-                        },
-                        errormsg =>
-                        {
-                            MessageBox.Show(errormsg, "could not deposit", MessageBoxButton.OK, MessageBoxImage.Error);
-                        });
+                        UpdateUI, ShowErrorMessage("could not deposit"));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void UpdateUI()
+        {
+            ClearEdit();
+            ShowSelectedMonth();
+        }
+
+        private void UpdateUI(Balance ignore)
+        {
+            UpdateUI();
+        }
+
+        private Action<string> ShowErrorMessage(string caption)
+        {
+            return errormsg => MessageBox.Show(errormsg, caption, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ClearEdit()

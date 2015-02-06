@@ -1,6 +1,13 @@
 ﻿<Properties StartupItem="cashbook.console/cashbook.console.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="cashbook.body/Body.cs">
+    <Files>
+      <File FileName="cashbook.body.tests/testBody.cs" Line="45" Column="45" />
+      <File FileName="cashbook.body/CashbookValidation.cs" Line="60" Column="60" />
+      <File FileName="cashbook.contracts/data/ValidationReport.cs" Line="55" Column="55" />
+      <File FileName="cashbook.body/Body.cs" Line="6" Column="6" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

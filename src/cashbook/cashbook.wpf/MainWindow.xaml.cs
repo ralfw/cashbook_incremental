@@ -21,7 +21,8 @@ namespace cashbook.wpf
             var es = new FileEventStore("events");
             var repo = new Repository(es);
             var cashbookFactory = new Func<Transaction[], Cashbook>(transactions => new Cashbook(transactions));
-            var body = new Body(repo, cashbookFactory);
+            var csvProvider = new CSVProvider();
+            var body = new Body(repo, cashbookFactory, csvProvider);
 
             var viewModel = new MainViewModel(body);
             this.DataContext = viewModel;

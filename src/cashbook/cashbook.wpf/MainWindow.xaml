@@ -29,9 +29,12 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Margin="5">select month:</Label>
             <DatePicker Grid.Column="1" Margin="5" SelectedDate="{Binding SelectedMonth}"></DatePicker>
+            <Button Grid.Column="3"  HorizontalAlignment="Right" Content="export" Padding="5" Margin="5" Command="{Binding ExportCommand, Mode=OneWay}"/>
         </Grid>
 
         <Grid Grid.Row="1" Margin="8" Background="#7F414F4D" >

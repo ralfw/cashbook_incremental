@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using cashbook.body;
 using cashbook.contracts;
 using cashbook.contracts.data;
 using cashbook.wpf.Annotations;
@@ -34,6 +35,7 @@ namespace cashbook.wpf
         private decimal _editAmount;
         private TransactionType _editTransactionType;
         private readonly DelegateCommand _transactionCommand;
+        private readonly DelegateCommand _exportCommand;
 
         private readonly Dictionary<string, ICollection<string>>
             _validationErrors = new Dictionary<string, ICollection<string>>();
@@ -41,6 +43,7 @@ namespace cashbook.wpf
         public MainViewModel()
         {
             _transactionCommand = new DelegateCommand(ProcessTransaction, () => !HasErrors);
+            _exportCommand = new DelegateCommand(Export, () => true);
 
             _selectedMonth = FirstOfMonth(DateTime.Today);
 
@@ -176,6 +179,11 @@ namespace cashbook.wpf
             get { return _transactionCommand; }
         }
 
+        public ICommand ExportCommand
+        {
+            get { return _exportCommand; }
+        }
+
         public IEnumerable GetErrors(string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName)
@@ -197,6 +205,17 @@ namespace cashbook.wpf
 
             ShownBalanceSheet = _body.Load_monthly_balance_sheet(SelectedMonth);
         }
+
+        private void Export()
+        {
+            var fromMonth = SelectedMonth;
+            var toMonth = SelectedMonth;
+
+            var exportReport = _body.Export(fromMonth, toMonth);
+
+            MessageBox.Show(String.Format("exported to: {0}", exportReport.Filename));
+        }
+
 
         private void ProcessTransaction()
         {

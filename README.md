@@ -32,7 +32,7 @@ The app seems to need just one dialog as shown in the above sketch. Users would 
 #### CLI for Interactions
 Ultimately the app should sport a graphical user interface. To move the implementation forward as quickly as possible, though, it's easier to start with a Command Line Interface (CLI).
 
-Also a CLI helps focussing on the domain. GUIs can be distracting to developers at times ;-)[^f_CLIvalue]
+Also a CLI helps focusing on the domain. GUIs can be distracting to developers at times ;-)[^f_CLIvalue]
 
 [^f_CLIvalue]: An app with comprehensive domain logic and "just"" a CLI is (arguably) more valuable than an app with a sophisticated GUI and meager domain logic.
 
@@ -62,7 +62,7 @@ Exported transactions of 2014 to cashbook_2014.csv
 ```
 
 ## Implementation
-The implementation separates head from body. The head's sole purpose it to translate between user/environment an body. The body's purpose is to create behavior when triggert by the user through a head.
+The implementation separates head from body. The head's sole purpose it to translate between user/environment and body. The body's purpose is to create behavior when triggered by the user through a head.
 
 The head knows the body only via the interface IBody{} defined in a contract assembly. That's simple IoC.
 

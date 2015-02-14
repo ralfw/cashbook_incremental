@@ -9,6 +9,7 @@ namespace cashbook.body.tests
 	[TestFixture ()]
 	public class testBody
 	{
+		Repository repo;
 		Body body;
 
 		[SetUp]
@@ -16,7 +17,7 @@ namespace cashbook.body.tests
 			TimeProvider.Now = () => DateTime.Now;
 
 			var es = new eventstore.InMemoryEventStore ();
-			var repo = new Repository (es);
+			repo = new Repository (es);
 			this.body = new Body (repo, txs => new Cashbook(txs), null);
 		}
 			
@@ -56,6 +57,10 @@ namespace cashbook.body.tests
 				null);
 			Assert.AreEqual (new DateTime (2014, 12, 1), result.Month);
 			Assert.AreEqual (100, result.Value);
+
+			var txs = this.repo.Load_all_transactions ().ToArray ();
+			Assert.AreEqual (1, txs.Length);
+			Assert.AreEqual ("Deposit", txs.First ().Description);
 
 			body.Deposit (new DateTime (2014, 12, 10), 50, "", false,
 				_ => result = _,

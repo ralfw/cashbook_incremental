@@ -1,5 +1,8 @@
 # Cash Book Application
+
 C# implementation for a cash book. Developed incrementally based on Flow Design as described in articles on ["The Architect's Napkin"](http://geekswithblogs.net/theArchitectsNapkin/default.aspx) and/or in [various books](https://leanpub.com/u/ralfw).
+
+Automatic build on AppVeyor: [![Build status](https://ci.appveyor.com/api/projects/status/sk8dr8yu0vj0tcls?svg=true)](https://ci.appveyor.com/project/RalfWestphal/cashbook-incremental)
 
 ## Requirements
 The cash book application is supposed to help small companies to keep their cash box in order. It's main purpose is to record withdrawals (taking money out of the cash box) and deposits (putting money into the cash box).
